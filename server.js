@@ -10,7 +10,7 @@ const options = {
   };
 
 const corsOptions = {
-  origin: 'margaritasdesignapi.integrador.xyz', 
+  origin: 'https://margaritasdesignapi.integrador.xyz', 
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', 
   credentials: true,
   optionsSuccessStatus: 204 
