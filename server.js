@@ -21,9 +21,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
 app.use(express.json());
-
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
@@ -43,12 +41,6 @@ require("./app/routes/usuarios.routes.js")(app);
 require("./app/routes/ventas.routes.js")(app);
 require("./app/routes/pagos.routes.js")(app);
 
-https.createServer(options, app).listen(3000, () => {
-  console.log("Servidor HTTPS corriendo en el puerto 3000");
-});
-
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
+https.createServer(options, app).listen(443, () => {
+  console.log("Servidor HTTPS corriendo en el puerto 443");
 });
