@@ -1,33 +1,30 @@
 const express = require("express");
-const https = require('https');
-const fs = require('fs');
+const https = require("https");
+const fs = require("fs");
 const cors = require("cors");
 const app = express();
 
 const options = {
-  key: fs.readFileSync('/etc/letsencrypt/live/margaritasdesignapi.integrador.xyz/privkey.pem'),
-  cert: fs.readFileSync('/etc/letsencrypt/live/margaritasdesignapi.integrador.xyz/fullchain.pem')
-  };
+  key: fs.readFileSync(
+    "/etc/letsencrypt/live/margaritasdesignapi.integrador.xyz/privkey.pem"
+  ),
+  cert: fs.readFileSync(
+    "/etc/letsencrypt/live/margaritasdesignapi.integrador.xyz/fullchain.pem"
+  ),
+};
 
 const corsOptions = {
-  origin: 'https://margaritasdesignapi.integrador.xyz', 
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', 
+  origin: "https://margaritasdesignapi.integrador.xyz",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
-  optionsSuccessStatus: 204 
-  };
-
-
-
+  optionsSuccessStatus: 204,
+};
 
 app.use(cors(corsOptions));
 
-app.use(express.json()); 
+app.use(express.json());
 
-
-app.use(
-  express.urlencoded({ extended: true })
-); 
-
+app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to MargaritasDesignAPI application." });
@@ -46,8 +43,11 @@ require("./app/routes/usuarios.routes.js")(app);
 require("./app/routes/ventas.routes.js")(app);
 require("./app/routes/pagos.routes.js")(app);
 
-
-
 https.createServer(options, app).listen(8080, () => {
-  console.log('Servidor HTTPS corriendo en el puerto 8080');
-  });
+  console.log("Servidor HTTPS corriendo en el puerto 8080");
+});
+
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}.`);
+});
