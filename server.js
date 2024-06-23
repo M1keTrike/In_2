@@ -1,8 +1,13 @@
 const express = require("express");
-
+const https = require('https');
+const fs = require('fs');
 const cors = require("cors");
-
 const app = express();
+
+const options = {
+  key: fs.readFileSync('/etc/letsencrypt/live/margaritasdesignapi.integrador.xyz/privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/margaritasdesignapi.integrador.xyz/fullchain.pem')
+  };
 
 const corsOptions = {
   origin: 'margaritasdesignapi.integrador.xyz', 
@@ -42,7 +47,7 @@ require("./app/routes/ventas.routes.js")(app);
 require("./app/routes/pagos.routes.js")(app);
 
 
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
-});
+
+https.createServer(options, app).listen(8080, () => {
+  console.log('Servidor HTTPS corriendo en el puerto 8080');
+  });
