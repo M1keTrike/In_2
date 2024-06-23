@@ -5,11 +5,14 @@ const cors = require("cors");
 const app = express();
 
 const corsOptions = {
-  origin: '34.225.255.230', 
+  origin: 'margaritasdesignapi.integrador.xyz', 
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', 
   credentials: true,
   optionsSuccessStatus: 204 
   };
+
+
+
 
 app.use(cors(corsOptions));
 
