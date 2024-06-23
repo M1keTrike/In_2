@@ -44,7 +44,7 @@ require("./app/routes/ventas.routes.js")(app);
 require("./app/routes/pagos.routes.js")(app);
 
 https.createServer(options, app).listen(3000, () => {
-  console.log("Servidor HTTPS corriendo en el puerto 8080");
+  console.log("Servidor HTTPS corriendo en el puerto 3000");
 });
 
 
