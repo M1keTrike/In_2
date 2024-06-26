@@ -3,17 +3,6 @@ const https = require("https");
 const fs = require("fs");
 const cors = require("cors");
 const app = express();
-const rateLimit = require('express-rate-limit');
-
-const apiLimiter = rateLimit({
-
-  windowMs:60 * 1000, // 15 minutes
-  
-  max: 5, // limit each IP to 100 requests per windowMs
-  
-  message: 'Too many requests from this IP, please try again later.',
-  
-  });
 
 const options = {
   key: fs.readFileSync(
@@ -39,9 +28,6 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to MargaritasDesignAPI application." });
 });
 
-app.use('/api/', apiLimiter);
-
-
 require("./app/routes/administrador.routes.js")(app);
 require("./app/routes/productos.routes.js")(app);
 require("./app/routes/carritos.routes.js")(app);
@@ -58,4 +44,3 @@ require("./app/routes/pagos.routes.js")(app);
 https.createServer(options, app).listen(3000, () => {
   console.log("Servidor HTTPS corriendo en el puerto 3000");
 });
-
