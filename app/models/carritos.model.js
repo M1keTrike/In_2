@@ -1,4 +1,4 @@
-const sql = require("./db.js");
+const sql = require("../config/db.config.js");
 
 // constructor
 const Carrito = function(carrito) {

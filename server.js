@@ -41,6 +41,11 @@ require("./app/routes/usuarios.routes.js")(app);
 require("./app/routes/ventas.routes.js")(app);
 require("./app/routes/pagos.routes.js")(app);
 
-https.createServer(options, app).listen(3000, () => {
-  console.log("Servidor HTTPS corriendo en el puerto 3000");
+const authRoutes = require("./app/routes/auth.routes.js");
+app.use("/api/auth", authRoutes);
+
+const PORT = process.env.PORT || 3000;
+
+https.createServer(options, app).listen(PORT, () => {
+  console.log(`Servidor HTTPS corriendo en el puerto ${PORT}`);
 });
