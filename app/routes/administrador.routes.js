@@ -1,10 +1,11 @@
 module.exports = app => {
+    const authMiddleware = require('../middleware/auth.js')
     const administrador = require("../controllers/administrador.controller.js");
   
     var router = require("express").Router();
   
     // Create a new administrador
-    router.post("/", administrador.create);
+    router.post("/",authMiddleware.verifyToken, administrador.create);
   
     // Retrieve all administradores
     router.get("/", administrador.findAll);
@@ -13,13 +14,13 @@ module.exports = app => {
     router.get("/:id", administrador.findOne);
   
     // Update a administrador with id
-    router.put("/:id", administrador.update);
+    router.put("/:id",authMiddleware.verifyToken, administrador.update);
   
     // Delete a administrador with id
-    router.delete("/:id", administrador.delete);
+    router.delete("/:id",authMiddleware.verifyToken, administrador.delete);
   
     // Delete all administradores
-    router.delete("/", administrador.deleteAll);
+    router.delete("/",authMiddleware.verifyToken, administrador.deleteAll);
   
     app.use('/api/administrador', router);
   };

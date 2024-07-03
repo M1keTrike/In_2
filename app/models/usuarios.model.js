@@ -1,6 +1,6 @@
 const sql = require("../config/db.config.js");
 
-// constructor
+
 const Usuario = function(usuario) {
     this.nombre = usuario.nombre;
     this.apellidos = usuario.apellidos;

@@ -3,6 +3,22 @@ const https = require("https");
 const fs = require("fs");
 const cors = require("cors");
 const app = express();
+const rateLimit = require('express-rate-limit');
+
+
+const apiLimiter = rateLimit({
+
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  
+  max: 1000, // limit each IP to 100 requests per windowMs
+  
+  message: 'Too many requests from this IP, please try again later.',
+  
+  });
+
+  app.use('/api/', apiLimiter);
+
+
 
 const options = {
   key: fs.readFileSync(
@@ -12,6 +28,7 @@ const options = {
     "/etc/letsencrypt/live/margaritasdesignapi.integrador.xyz/fullchain.pem"
   ),
 };
+
 
 const corsOptions = {
   origin: "http://localhost:5173",
@@ -45,7 +62,17 @@ const authRoutes = require("./app/routes/auth.routes.js");
 app.use("/api/auth", authRoutes);
 
 const PORT = process.env.PORT || 3000;
+/*
+app.listen(PORT, () => {
+
+  console.log(`Server is running on port ${PORT}`);
+  
+  });
+*/
+
+
 
 https.createServer(options, app).listen(PORT, () => {
   console.log(`Servidor HTTPS corriendo en el puerto ${PORT}`);
 });
+
