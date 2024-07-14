@@ -14,7 +14,7 @@ const createImage = async (req, res) => {
   }
 };
 
-const baseURL = 'http://localhost:3000/uploads/';
+const baseURL = 'https://margaritasdesignapi.integrador.xyz/uploads/';
 
 const getImageById = async (req, res) => {
   try {
