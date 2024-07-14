@@ -38,8 +38,16 @@ const corsOptionsProduction = {
   optionsSuccessStatus: 204,
 };
 
+const corsOptionsTries = {
+  origin: "http://localhost:5050",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+
 app.use(cors(corsOptionsDev));
-app.use(cors(corsOptionsProduction))
+app.use(cors(corsOptionsProduction));
+app.use(cors(corsOptionsTries));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

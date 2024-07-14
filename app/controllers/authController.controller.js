@@ -85,6 +85,7 @@ exports.login = (req, res) => {
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
       expiresIn: 86400,
     });
+    
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Expose-Headers", "Authorization");
     res.setHeader("Authorization", "Bearer " + token);
