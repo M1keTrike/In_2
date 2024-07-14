@@ -24,14 +24,22 @@ const options = {
   ),
 };
 
-const corsOptions = {
-  origin: "http://localhost:5173,https://margaritasdesign.integrador.xyz",
+const corsOptionsDev = {
+  origin: "http://localhost:5173",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
   optionsSuccessStatus: 204,
 };
 
-app.use(cors(corsOptions));
+const corsOptionsProduction = {
+  origin: "https://margaritasdesign.integrador.xyz",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptionsDev));
+app.use(cors(corsOptionsProduction))
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
