@@ -3,24 +3,18 @@ const https = require("https");
 const fs = require("fs");
 const cors = require("cors");
 const app = express();
-const rateLimit = require('express-rate-limit');
-const path = require('path')
-
+const rateLimit = require("express-rate-limit");
+const path = require("path");
 
 const apiLimiter = rateLimit({
+  windowMs: 60 * 1000,
 
-  windowMs: 60 * 1000, // 1 minute
-  
-  max: 100, // limit each IP to 10000 requests per windowMs
-  
-  message: 'Too many requests from this IP, please try again later.',
-  
-  });
+  max: 100,
+  message: "Too many requests from this IP, please try again later.",
+});
 
-  app.use('/api/', apiLimiter);
+app.use("/api/", apiLimiter);
 
-
-/*
 const options = {
   key: fs.readFileSync(
     "/etc/letsencrypt/live/margaritasdesignapi.integrador.xyz/privkey.pem"
@@ -29,18 +23,16 @@ const options = {
     "/etc/letsencrypt/live/margaritasdesignapi.integrador.xyz/fullchain.pem"
   ),
 };
-*/
 
+const corsOptions = {
+  origin: "http://localhost:5173,https://margaritasdesign.integrador.xyz",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
 
-// const corsOptions = {
-//   origin: "http://localhost:5173",
-//   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-//   credentials: true,
-//   optionsSuccessStatus: 204,
-// };
+app.use(cors(corsOptions));
 
-// app.use(cors(corsOptions));
-app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -59,25 +51,15 @@ require("./app/routes/proveedores.routes.js")(app);
 require("./app/routes/usuarios.routes.js")(app);
 require("./app/routes/ventas.routes.js")(app);
 require("./app/routes/pagos.routes.js")(app);
-require("./app/routes/imageRoutes.js")(app)
+require("./app/routes/imageRoutes.js")(app);
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 const authRoutes = require("./app/routes/auth.routes.js");
 app.use("/api/auth", authRoutes);
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-
-  console.log(`Server is running on port ${PORT}`);
-  
-  });
-
-
-
-/*
 https.createServer(options, app).listen(PORT, () => {
   console.log(`Servidor HTTPS corriendo en el puerto ${PORT}`);
 });
-*/
