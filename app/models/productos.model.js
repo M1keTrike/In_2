@@ -42,7 +42,7 @@ Producto.findById = (id, result) => {
   });
 };
 
-const baseURL = 'http://localhost:3000/uploads/';
+const baseURL = 'https://margaritasdesign.integrador.xyz/uploads/';
 
 Producto.getAll = (nombre, result) => {
   let query = `SELECT productos.*, images.filename FROM productos JOIN images ON productos.id_imagen = images.id`;
