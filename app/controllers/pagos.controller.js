@@ -12,6 +12,9 @@ exports.create = (req, res) => {
         tipo_de_pago: req.body.tipo_de_pago,
         metodo_de_pago: req.body.metodo_de_pago,
         total: req.body.total,
+        id_admin: req.body.id_admin,
+        fecha: req.body.fecha,
+        estatus: req.body.estatus,
     });
 
     Pago.create(pago, (err, data) => {
@@ -98,3 +101,21 @@ exports.deleteAll = (req, res) => {
         else res.send({ message: `All Pagos were deleted successfully!` });
     });
 };
+
+exports.findAllByIdUser = (req, res) => {
+    
+    Pago.getByIdAdmin(req.params.id, (err, data) => {
+        if (err) {
+            if (err.kind === "not_found") {
+                res.status(404).send({
+                    message: `Not found Pagos with id_admin ${req.params.id}.`,
+                });
+            } else {
+                res.status(500).send({
+                    message: "Error retrieving Pagos with id " + req.params.id,
+                });
+            }
+        } else res.send(data);
+    });
+};
+

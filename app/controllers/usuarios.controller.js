@@ -14,10 +14,12 @@ exports.create = (req, res) => {
         direccion: req.body.direccion,
         correo_electronico: req.body.correo_electronico,
         telefono: req.body.telefono,
-        roles: req.body.roles
+        roles: req.body.roles,
+    
     });
 
     Usuario.create(usuario, (err, data) => {
+
         if (err)
             res.status(500).send({
                 message: err.message || "Some error occurred while creating the Usuario.",

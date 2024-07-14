@@ -12,6 +12,8 @@ exports.create = (req, res) => {
         detalles: req.body.detalles,
         cantidad: req.body.cantidad,
         cantidad_unitaria: req.body.cantidad_unitaria,
+        precio_actual: req.body.precio_actual,
+        id_admin: req.body.id_admin,
     });
 
     MateriaPrima.create(materiaPrima, (err, data) => {
@@ -96,5 +98,22 @@ exports.deleteAll = (req, res) => {
                 message: err.message || "Some error occurred while removing all MateriaPrima.",
             });
         else res.send({ message: `All MateriaPrima were deleted successfully!` });
+    });
+};
+
+exports.findAllByIdUser = (req, res) => {
+    
+    MateriaPrima.getByIdAdmin(req.params.id, (err, data) => {
+        if (err) {
+            if (err.kind === "not_found") {
+                res.status(404).send({
+                    message: `Not found Materia Prima with id_admin ${req.params.id}.`,
+                });
+            } else {
+                res.status(500).send({
+                    message: "Error retrieving Materia Prima with id " + req.params.id,
+                });
+            }
+        } else res.send(data);
     });
 };

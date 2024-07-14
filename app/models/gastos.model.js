@@ -5,6 +5,7 @@ const Gasto = function(gasto) {
     this.detalles = gasto.detalles;
     this.total = gasto.total;
     this.fecha = gasto.fecha;
+    this.id_admin = gasto.id_admin;
 };
 
 Gasto.create = (newGasto, result) => {
@@ -19,6 +20,31 @@ Gasto.create = (newGasto, result) => {
         result(null, { id: res.insertId, ...newGasto });
     });
 };
+
+Gasto.getByIdAdmin = (id_admin, result) => {
+    sql.query(
+      `SELECT gastos.*
+         FROM gastos
+         JOIN usuarios ON gastos.id_admin = usuarios.id
+         WHERE gastos.id_admin = ?`,
+      id_admin,
+      (err, res) => {
+        if (err) {
+          console.log("Error: ", err);
+          result(err, null);
+          return;
+        }
+  
+        if (res.length) {
+          console.log("Gastos encontrados: ", res);
+          result(null, res);
+          return;
+        }
+  
+        result({ kind: "not_found" }, null);
+      }
+    );
+  };
 
 Gasto.findById = (id, result) => {
     sql.query(`SELECT * FROM gastos WHERE id = ${id}`, (err, res) => {
@@ -59,8 +85,8 @@ Gasto.getAll = (fecha, result) => {
 
 Gasto.updateById = (id, gasto, result) => {
     sql.query(
-        "UPDATE gastos SET detalles = ?, total = ?, fecha = ? WHERE id = ?",
-        [gasto.detalles, gasto.total, gasto.fecha, id],
+        "UPDATE gastos SET detalles = ?, total = ?, fecha = ?, id_admin = ? WHERE id = ?",
+        [gasto.detalles, gasto.total, gasto.fecha,gasto.id_admin, id],
         (err, res) => {
             if (err) {
                 console.log("error: ", err);
@@ -78,6 +104,8 @@ Gasto.updateById = (id, gasto, result) => {
         }
     );
 };
+
+
 
 Gasto.remove = (id, result) => {
     sql.query("DELETE FROM gastos WHERE id = ?", id, (err, res) => {

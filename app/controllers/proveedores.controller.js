@@ -13,6 +13,7 @@ exports.create = (req, res) => {
         descripcion: req.body.descripcion,
         direccion: req.body.direccion,
         correo_electronico: req.body.correo_electronico,
+        id_admin: req.body.id_admin,
     });
 
     Proveedor.create(proveedor, (err, data) => {
@@ -97,5 +98,22 @@ exports.deleteAll = (req, res) => {
                 message: err.message || "Some error occurred while removing all Proveedores.",
             });
         else res.send({ message: `All Proveedores were deleted successfully!` });
+    });
+};
+
+exports.findAllByIdUser = (req, res) => {
+    
+    Proveedor.getByIdAdmin(req.params.id, (err, data) => {
+        if (err) {
+            if (err.kind === "not_found") {
+                res.status(404).send({
+                    message: `Not found Proveedores with id_admin ${req.params.id}.`,
+                });
+            } else {
+                res.status(500).send({
+                    message: "Error retrieving Proveedores with id " + req.params.id,
+                });
+            }
+        } else res.send(data);
     });
 };

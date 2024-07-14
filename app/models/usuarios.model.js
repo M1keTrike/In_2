@@ -1,4 +1,5 @@
 const sql = require("../config/db.config.js");
+const pool = require('../config/db');
 
 
 const Usuario = function(usuario) {
@@ -12,7 +13,7 @@ const Usuario = function(usuario) {
 };
 
 Usuario.create = (newUsuario, result) => {
-    sql.query("INSERT INTO usuarios SET ?", newUsuario, (err, res) => {
+   sql.query("INSERT INTO usuarios SET ?", newUsuario, (err, res) => {
         if (err) {
             console.log("error : ", err);
             result(err, null);
@@ -83,6 +84,11 @@ Usuario.updateById = (id, usuario, result) => {
     );
 };
 
+Usuario.getAllUsers = async () => {
+    const [rows] = await pool.query('SELECT * FROM usuarios');
+    return rows;
+  };
+
 Usuario.remove = (id, result) => {
     sql.query("DELETE FROM usuarios WHERE id = ?", id, (err, res) => {
         if (err) {
@@ -113,5 +119,7 @@ Usuario.removeAll = result => {
         result(null, res);
     });
 };
+
+
 
 module.exports = Usuario;

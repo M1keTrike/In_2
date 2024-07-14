@@ -6,6 +6,8 @@ const MateriaPrima = function(materiaPrima) {
     this.detalles = materiaPrima.detalles;
     this.cantidad = materiaPrima.cantidad;
     this.cantidad_unitaria = materiaPrima.cantidad_unitaria;
+    this.precio_actual = materiaPrima.precio_actual;
+    this.id_admin = materiaPrima.id_admin;
 };
 
 MateriaPrima.create = (newMateriaPrima, result) => {
@@ -20,6 +22,31 @@ MateriaPrima.create = (newMateriaPrima, result) => {
         result(null, { id: res.insertId, ...newMateriaPrima });
     });
 };
+
+MateriaPrima.getByIdAdmin = (id_admin, result) => {
+    sql.query(
+      `SELECT materia_prima.*
+         FROM materia_prima
+         JOIN usuarios ON materia_prima.id_admin = usuarios.id
+         WHERE materia_prima.id_admin = ?`,
+      id_admin,
+      (err, res) => {
+        if (err) {
+          console.log("Error: ", err);
+          result(err, null);
+          return;
+        }
+  
+        if (res.length) {
+          console.log("Materia prima encontrada: ", res);
+          result(null, res);
+          return;
+        }
+  
+        result({ kind: "not_found" }, null);
+      }
+    );
+  };
 
 MateriaPrima.findById = (id, result) => {
     sql.query(`SELECT * FROM materia_prima WHERE id = ${id}`, (err, res) => {
@@ -60,8 +87,8 @@ MateriaPrima.getAll = (nombre, result) => {
 
 MateriaPrima.updateById = (id, materiaPrima, result) => {
     sql.query(
-        "UPDATE materia_prima SET nombre = ?, detalles = ?, cantidad = ?, cantidad_unitaria = ? WHERE id = ?",
-        [materiaPrima.nombre, materiaPrima.detalles, materiaPrima.cantidad, materiaPrima.cantidad_unitaria, id],
+        "UPDATE materia_prima SET nombre = ?, detalles = ?, cantidad = ?, cantidad_unitaria = ?, precio_actual = ?, id_admin = ? WHERE id = ?",
+        [materiaPrima.nombre, materiaPrima.detalles, materiaPrima.cantidad, materiaPrima.cantidad_unitaria,materiaPrima.precio_actual,materiaPrima.id_admin, id],
         (err, res) => {
             if (err) {
                 console.log("error: ", err);

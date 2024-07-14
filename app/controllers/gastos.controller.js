@@ -11,6 +11,7 @@ exports.create = (req, res) => {
         detalles: req.body.detalles,
         total: req.body.total,
         fecha: req.body.fecha,
+        id_admin: req.body.id_admin,
     });
 
     Gasto.create(gasto, (err, data) => {
@@ -95,5 +96,22 @@ exports.deleteAll = (req, res) => {
                 message: err.message || "Some error occurred while removing all Gastos.",
             });
         else res.send({ message: `All Gastos were deleted successfully!` });
+    });
+};
+
+exports.findAllByIdUser = (req, res) => {
+    
+    Gasto.getByIdAdmin(req.params.id, (err, data) => {
+        if (err) {
+            if (err.kind === "not_found") {
+                res.status(404).send({
+                    message: `Not found Gastos with id_admin ${req.params.id}.`,
+                });
+            } else {
+                res.status(500).send({
+                    message: "Error retrieving Gastos with id " + req.params.id,
+                });
+            }
+        } else res.send(data);
     });
 };

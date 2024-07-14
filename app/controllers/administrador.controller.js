@@ -113,3 +113,21 @@ exports.deleteAll = (req, res) => {
     else res.send({ message: `All Administradores were deleted successfully!` });
   });
 };
+
+
+exports.getByUser = (req, res) => {
+    
+  Administrador.getByIdUsuario(req.params.id, (err, data) => {
+      if (err) {
+          if (err.kind === "not_found") {
+              res.status(404).send({
+                  message: `Not found Administrador with id_usuario ${req.params.id}.`,
+              });
+          } else {
+              res.status(500).send({
+                  message: "Error retrieving Administrador with id " + req.params.id,
+              });
+          }
+      } else res.send(data);
+  });
+};

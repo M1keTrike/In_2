@@ -5,6 +5,7 @@ const Carrito = function(carrito) {
     this.total = carrito.total;
     this.importe = carrito.importe;
     this.productos = carrito.productos;
+    this.id_cliente = carrito.id_cliente;
    
 };
 
@@ -59,10 +60,35 @@ Carrito.findById = (id, result) => {
     });
   };
 
+  Carrito.getByIdCliente = (id_cliente, result) => {
+    sql.query(
+      `SELECT carritos.*
+         FROM carritos
+         JOIN usuarios ON carritos.id_cliente = usuarios.id
+         WHERE carritos.id_cliente = ?`,
+      id_cliente,
+      (err, res) => {
+        if (err) {
+          console.log("Error: ", err);
+          result(err, null);
+          return;
+        }
+  
+        if (res.length) {
+          console.log("Carritos encontrados: ", res);
+          result(null, res);
+          return;
+        }
+  
+        result({ kind: "not_found" }, null);
+      }
+    );
+  };
+
   Carrito.updateById = (id, carrito, result) => {
     sql.query(
-      "UPDATE carritos SET total = ?, importe = ?, productos = ?  WHERE id = ?",
-      [carrito.total, carrito.importe,carrito.productos,id],
+      "UPDATE carritos SET total = ?, importe = ?, productos = ?, id_cliente = ?  WHERE id = ?",
+      [carrito.total, carrito.importe,carrito.productos,carrito.id_cliente,id],
       (err, res) => {
         if (err) {
           console.log("error: ", err);
@@ -113,5 +139,32 @@ Carrito.findById = (id, result) => {
       result(null, res);
     });
   };
+
+  Carrito.getCarritoUsuarioByIdCliente = (id_cliente, result) => {
+    sql.query(
+      `SELECT carritos.*, usuarios.nombre
+         FROM carritos
+         JOIN usuarios ON carritos.id_cliente = usuarios.id
+         WHERE carritos.id_cliente = ?`,
+      id_cliente,
+      (err, res) => {
+        if (err) {
+          console.log("Error: ", err);
+          result(err, null);
+          return;
+        }
+  
+        if (res.length) {
+          console.log("Carrito encontrado: ", res);
+          result(null, res);
+          return;
+        }
+  
+        result({ kind: "not_found" }, null);
+      }
+    );
+  };
   
   module.exports = Carrito;
+
+  

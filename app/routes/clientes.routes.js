@@ -6,8 +6,8 @@ module.exports = app => {
 
     router.post("/",authMiddleware.verifyToken,cliente.create);
     router.get("/",authMiddleware.verifyToken,cliente.findAll);
-    router.get("/:id",cliente.findOne);
-    router.put("/:id", cliente.update);
+    router.get("/:id",authMiddleware.verifyToken,cliente.findOne);
+    router.put("/:id",authMiddleware.verifyToken,cliente.update);
     router.delete("/:id",authMiddleware.verifyToken,cliente.delete);
     router.delete("/", cliente.deleteAll);
 

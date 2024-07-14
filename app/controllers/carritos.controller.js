@@ -13,6 +13,7 @@ exports.create = (req, res) => {
     total: req.body.total,
     importe: req.body.importe,
     productos: req.body.productos,
+    id_cliente: req.body.id_cliente
     });
 
   // Save Administrador in the database
@@ -110,3 +111,39 @@ exports.deleteAll = (req, res) => {
     else res.send({ message: `All Carritos were deleted successfully!` });
   });
 };
+
+exports.findAllByIdUser = (req, res) => {
+    
+  Carrito.getByIdCliente(req.params.id, (err, data) => {
+      if (err) {
+          if (err.kind === "not_found") {
+              res.status(404).send({
+                  message: `Not found Carritos with id_cliente ${req.params.id}.`,
+              });
+          } else {
+              res.status(500).send({
+                  message: "Error retrieving Carritos with id " + req.params.id,
+              });
+          }
+      } else res.send(data);
+  });
+};
+
+exports.findCarritoCliente = (req, res) => {
+    
+  Carrito.getCarritoUsuarioByIdCliente(req.params.id, (err, data) => {
+      if (err) {
+          if (err.kind === "not_found") {
+              res.status(404).send({
+                  message: `Not found Carrito with id_cliente ${req.params.id}.`,
+              });
+          } else {
+              res.status(500).send({
+                  message: "Error retrieving Carrito with id " + req.params.id,
+              });
+          }
+      } else res.send(data);
+  });
+};
+
+

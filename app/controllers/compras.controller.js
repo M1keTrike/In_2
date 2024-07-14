@@ -8,6 +8,7 @@ exports.create = (req, res) => {
     }
 
     const compra = new Compra({
+        id_cliente: req.body.id_cliente,
         importe: req.body.importe,
         detalles: req.body.detalles,
         fecha: req.body.fecha,
@@ -95,5 +96,23 @@ exports.deleteAll = (req, res) => {
                 message: err.message || "Some error occurred while removing all Compras.",
             });
         else res.send({ message: `All Compras were deleted successfully!` });
+    });
+};
+
+
+exports.findAllByIdUser = (req, res) => {
+    
+    Compra.getByIdCliente(req.params.id, (err, data) => {
+        if (err) {
+            if (err.kind === "not_found") {
+                res.status(404).send({
+                    message: `Not found Compras with id_cliente ${req.params.id}.`,
+                });
+            } else {
+                res.status(500).send({
+                    message: "Error retrieving Compra with id " + req.params.id,
+                });
+            }
+        } else res.send(data);
     });
 };

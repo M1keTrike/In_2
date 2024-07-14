@@ -115,5 +115,31 @@ Administrador.findById = (id, result) => {
       result(null, res);
     });
   };
+
+  Administrador.getByIdUsuario = (id_user, result) => {
+    sql.query(
+      `SELECT administrador.*
+         FROM administrador
+         JOIN usuarios ON administrador.id_usuario = usuarios.id
+         WHERE administrador.id_usuario = ?`,
+      id_user,
+      (err, res) => {
+        if (err) {
+          console.log("Error: ", err);
+          result(err, null);
+          return;
+        }
+  
+        if (res.length) {
+          console.log("Administradores encontrados: ", res);
+          result(null, res);
+          return;
+        }
+  
+        result({ kind: "not_found" }, null);
+      }
+    );
+  };
+
   
   module.exports = Administrador;

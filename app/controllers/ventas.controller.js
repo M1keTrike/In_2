@@ -12,7 +12,8 @@ exports.create = (req, res) => {
         cliente: req.body.cliente,
         estatus: req.body.estatus,
         detalles: req.body.detalles,
-        ingresos: req.body.ingresos
+        ingresos: req.body.ingresos,
+        id_admin: req.body.id_admin,
     });
 
     Venta.create(venta, (err, data) => {
@@ -97,5 +98,22 @@ exports.deleteAll = (req, res) => {
                 message: err.message || "Some error occurred while removing all Ventas.",
             });
         else res.send({ message: `All Ventas were deleted successfully!` });
+    });
+};
+
+exports.findAllByIdUser = (req, res) => {
+    
+    Venta.getByIdAdmin(req.params.id, (err, data) => {
+        if (err) {
+            if (err.kind === "not_found") {
+                res.status(404).send({
+                    message: `Not found Ventas with id_admin ${req.params.id}.`,
+                });
+            } else {
+                res.status(500).send({
+                    message: "Error retrieving Ventas with id " + req.params.id,
+                });
+            }
+        } else res.send(data);
     });
 };

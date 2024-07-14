@@ -22,6 +22,31 @@ Venta.create = (newVenta, result) => {
     });
 };
 
+Venta.getByIdAdmin = (id_admin, result) => {
+    sql.query(
+      `SELECT ventas.*
+         FROM ventas
+         JOIN usuarios ON ventas.id_admin = usuarios.id
+         WHERE ventas.id_admin = ?`,
+      id_admin,
+      (err, res) => {
+        if (err) {
+          console.log("Error: ", err);
+          result(err, null);
+          return;
+        }
+  
+        if (res.length) {
+          console.log("Ventas encontradas: ", res);
+          result(null, res);
+          return;
+        }
+  
+        result({ kind: "not_found" }, null);
+      }
+    );
+  };
+
 Venta.findById = (id, result) => {
     sql.query(`SELECT * FROM ventas WHERE id = ${id}`, (err, res) => {
         if (err) {
