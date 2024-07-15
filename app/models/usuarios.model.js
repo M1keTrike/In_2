@@ -10,6 +10,7 @@ const Usuario = function(usuario) {
     this.correo_electronico = usuario.correo_electronico;
     this.telefono = usuario.telefono;
     this.roles = usuario.roles;
+    this.apellido_materno = usuario.apellido_materno;
 };
 
 Usuario.create = (newUsuario, result) => {
@@ -64,7 +65,7 @@ Usuario.getAll = (nombre, result) => {
 
 Usuario.updateById = (id, usuario, result) => {
     sql.query(
-        "UPDATE usuarios SET nombre = ?, apellidos = ?, contraseña = ?, direccion = ?, correo_electronico = ?, telefono = ?, roles = ? WHERE id = ?",
+        "UPDATE usuarios SET nombre = ?, apellido_paterno = ?, contraseña = ?, direccion = ?, correo_electronico = ?, telefono = ?, roles = ?, apellido_materno WHERE id = ?",
         [usuario.nombre, usuario.apellidos, usuario.contraseña, usuario.direccion, usuario.correo_electronico, usuario.telefono, usuario.roles, id],
         (err, res) => {
             if (err) {

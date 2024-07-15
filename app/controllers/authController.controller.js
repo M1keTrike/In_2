@@ -16,11 +16,12 @@ exports.register = async (req, res) => {
   const {
     username,
     password,
-    apellidos,
+    apellido_paterno,
     direccion,
     correo_electronico,
     telefono,
-    roles,
+    rol,
+    apellido_materno
   } = req.body;
 
   const usuarios = await usuario.getAllUsers();
@@ -38,17 +39,18 @@ exports.register = async (req, res) => {
   const hashedPassword = bcrypt.hashSync(password, 8);
 
   const query =
-    "INSERT INTO usuarios (nombre, contraseña, apellidos, direccion, correo_electronico, telefono, roles) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    "INSERT INTO usuarios (nombre, contraseña, apellido_paterno, direccion, correo_electronico, telefono, rol, apellido_materno) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
   db.query(
     query,
     [
       username,
       hashedPassword,
-      apellidos,
+      apellido_paterno,
       direccion,
       correo_electronico,
       telefono,
-      roles,
+      rol,
+      apellido_materno,
     ],
     (err, result) => {
       if (err) {
@@ -95,4 +97,6 @@ exports.login = (req, res) => {
       user_role: user.roles,
     });
   });
+
+  
 };

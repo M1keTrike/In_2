@@ -9,12 +9,13 @@ exports.create = (req, res) => {
 
     const usuario = new Usuario({
         nombre: req.body.nombre,
-        apellidos: req.body.apellidos,
+        apellido_paterno: req.body.apellido_paterno,
         contraseña: req.body.contraseña,
         direccion: req.body.direccion,
         correo_electronico: req.body.correo_electronico,
         telefono: req.body.telefono,
-        roles: req.body.roles,
+        roles: req.body.rol,
+        apellido_materno: req.body.apellido_materno
     
     });
 

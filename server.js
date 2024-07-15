@@ -15,14 +15,14 @@ const apiLimiter = rateLimit({
 
 app.use("/api/", apiLimiter);
 
-const options = {
-  key: fs.readFileSync(
-    "/etc/letsencrypt/live/margaritasdesignapi.integrador.xyz/privkey.pem"
-  ),
-  cert: fs.readFileSync(
-    "/etc/letsencrypt/live/margaritasdesignapi.integrador.xyz/fullchain.pem"
-  ),
-};
+// const options = {
+//   key: fs.readFileSync(
+//     "/etc/letsencrypt/live/margaritasdesignapi.integrador.xyz/privkey.pem"
+//   ),
+//   cert: fs.readFileSync(
+//     "/etc/letsencrypt/live/margaritasdesignapi.integrador.xyz/fullchain.pem"
+//   ),
+// };
 
 const corsOptionsDev = {
   origin: "http://localhost:5173",
@@ -39,7 +39,7 @@ const corsOptionsProduction = {
 };
 
 const corsOptionsTries = {
-  origin: "http://localhost:5050",
+  origin: "http://localhost:5500",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
   optionsSuccessStatus: 204,
@@ -68,14 +68,20 @@ require("./app/routes/usuarios.routes.js")(app);
 require("./app/routes/ventas.routes.js")(app);
 require("./app/routes/pagos.routes.js")(app);
 require("./app/routes/imageRoutes.js")(app);
+require("./app/routes/carrito_productos.routes.js")(app)
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 const authRoutes = require("./app/routes/auth.routes.js");
+
 app.use("/api/auth", authRoutes);
 
 const PORT = process.env.PORT || 3000;
 
-https.createServer(options, app).listen(PORT, () => {
-  console.log(`Servidor HTTPS corriendo en el puerto ${PORT}`);
-});
+// https.createServer(options, app).listen(PORT, () => {
+//   console.log(`Servidor HTTPS corriendo en el puerto ${PORT}`);
+// });
+
+app.listen(PORT,() => {
+  console.log(`Server is running in port ${PORT}`);
+})

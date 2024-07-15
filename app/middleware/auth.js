@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 exports.verifyToken = (req, res, next) => {
-  const token = req.headers['x-access-token'];
+  const token = req.headers['Authorization'];
   if (!token) return res.status(403).send({ message: 'No token provided.' });
 
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
@@ -12,5 +12,6 @@ exports.verifyToken = (req, res, next) => {
     next();
   });
 };
+
 
 
