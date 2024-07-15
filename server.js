@@ -15,14 +15,14 @@ const apiLimiter = rateLimit({
 
 app.use("/api/", apiLimiter);
 
-// const options = {
-//   key: fs.readFileSync(
-//     "/etc/letsencrypt/live/margaritasdesignapi.integrador.xyz/privkey.pem"
-//   ),
-//   cert: fs.readFileSync(
-//     "/etc/letsencrypt/live/margaritasdesignapi.integrador.xyz/fullchain.pem"
-//   ),
-// };
+const options = {
+  key: fs.readFileSync(
+    "/etc/letsencrypt/live/margaritasdesignapi.integrador.xyz/privkey.pem"
+  ),
+  cert: fs.readFileSync(
+    "/etc/letsencrypt/live/margaritasdesignapi.integrador.xyz/fullchain.pem"
+  ),
+};
 
 const corsOptionsDev = {
   origin: "http://localhost:5173",
@@ -78,10 +78,7 @@ app.use("/api/auth", authRoutes);
 
 const PORT = process.env.PORT || 3000;
 
-// https.createServer(options, app).listen(PORT, () => {
-//   console.log(`Servidor HTTPS corriendo en el puerto ${PORT}`);
-// });
+https.createServer(options, app).listen(PORT, () => {
+  console.log(`Servidor HTTPS corriendo en el puerto ${PORT}`);
+});
 
-app.listen(PORT,() => {
-  console.log(`Server is running in port ${PORT}`);
-})
