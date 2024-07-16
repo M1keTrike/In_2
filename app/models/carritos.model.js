@@ -86,8 +86,8 @@ Carrito.findById = (id, result) => {
 
   Carrito.updateById = (id, carrito, result) => {
     sql.query(
-      "UPDATE carritos SET total = ?, importe = ?, productos = ?, id_cliente = ?  WHERE id = ?",
-      [carrito.total, carrito.importe,carrito.productos,carrito.id_cliente,id],
+      "UPDATE carritos SET total = ?, importe = ?, id_cliente = ?  WHERE id = ?",
+      [carrito.total, carrito.importe,carrito.id_cliente,id],
       (err, res) => {
         if (err) {
           console.log("error: ", err);
