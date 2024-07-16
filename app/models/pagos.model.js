@@ -7,7 +7,6 @@ const Pago = function(pago) {
     this.metodo_de_pago = pago.metodo_de_pago;
     this.total = pago.total;
     this.id_admin = pago.id_admin;
-    this.fecha = pago.fecha;
     this.estatus = pago.estatus;
 }
 
@@ -88,8 +87,8 @@ Pago.getAll = (detalles, result) => {
 
 Pago.updateById = (id, pago, result) => {
     sql.query(
-        "UPDATE pagos SET detalles = ?, tipo_de_pago = ?, metodo_de_pago = ?, total = ?, id_admin = ?, fecha = ?, estatus = ? WHERE id = ?",
-        [pago.detalles, pago.tipo_de_pago, pago.metodo_de_pago, pago.total,pago.id_admin, id],
+        "UPDATE pagos SET detalles = ?, tipo_de_pago = ?, metodo_de_pago = ?, total = ?, id_admin = ?, estatus = ? WHERE id = ?",
+        [pago.detalles, pago.tipo_de_pago, pago.metodo_de_pago, pago.total,pago.id_admin,pago.estatus, id],
         (err, res) => {
             if (err) {
                 console.log("error: ", err);
