@@ -4,7 +4,6 @@ const sql = require("../config/db.config.js");
 const Carrito = function(carrito) {
     this.total = carrito.total;
     this.importe = carrito.importe;
-    this.productos = carrito.productos;
     this.id_cliente = carrito.id_cliente;
    
 };

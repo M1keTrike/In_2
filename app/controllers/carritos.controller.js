@@ -12,7 +12,6 @@ exports.create = (req, res) => {
   const carrito = new Carrito({
     total: req.body.total,
     importe: req.body.importe,
-    productos: req.body.productos,
     id_cliente: req.body.id_cliente
     });
 
