@@ -9,7 +9,7 @@ const Usuario = function(usuario) {
     this.direccion = usuario.direccion;
     this.correo_electronico = usuario.correo_electronico;
     this.telefono = usuario.telefono;
-    this.roles = usuario.roles;
+    this.rol = usuario.rol;
     this.apellido_materno = usuario.apellido_materno;
 };
 
