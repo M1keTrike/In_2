@@ -31,17 +31,17 @@ const corsOptionsDev = {
   optionsSuccessStatus: 204,
 };
 
-const corsOptionsProduction = {
-  origin: "https://margaritasdesign.integrador.xyz",
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  credentials: true,
-  optionsSuccessStatus: 204,
-};
+// const corsOptionsProduction = {
+//   origin: "https://margaritasdesign.integrador.xyz",
+//   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+//   credentials: true,
+//   optionsSuccessStatus: 204,
+// };
 
 
 
 app.use(cors(corsOptionsDev));
-app.use(cors(corsOptionsProduction));
+// app.use(cors(corsOptionsProduction));
 
 
 app.use(express.json());
