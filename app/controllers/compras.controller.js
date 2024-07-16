@@ -11,7 +11,6 @@ exports.create = (req, res) => {
         id_cliente: req.body.id_cliente,
         importe: req.body.importe,
         detalles: req.body.detalles,
-        fecha: req.body.fecha,
     });
 
     Compra.create(compra, (err, data) => {

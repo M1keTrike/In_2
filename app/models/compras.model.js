@@ -5,7 +5,6 @@ const Compra = function (compra) {
   this.id_cliente = compra.id_cliente;
   this.importe = compra.importe;
   this.detalles = compra.detalles;
-  this.fecha = compra.fecha;
 };
 
 Compra.create = (newCompra, result) => {
@@ -60,7 +59,7 @@ Compra.getAll = (fecha, result) => {
 
 Compra.updateById = (id, compra, result) => {
   sql.query(
-    "UPDATE compras SET importe = ?, detalles = ?, fecha = ?, id_cliente = ? WHERE id = ?",
+    "UPDATE compras SET importe = ?, detalles = ?, id_cliente = ? WHERE id = ?",
     [compra.importe, compra.detalles, compra.fecha, compra.id_cliente, id],
     (err, res) => {
       if (err) {
