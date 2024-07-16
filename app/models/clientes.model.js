@@ -61,7 +61,7 @@ Cliente.getAll = (nombre, result) => {
 Cliente.updateById = (id, cliente, result) => {
   sql.query(
     "UPDATE clientes SET pagos = ?, compras = ?, id_carrito = ?, id_usuario = ? WHERE id = ?",
-    [cliente.pagos, cliente.compras, cliente.nombre, id],
+    [cliente.pagos, cliente.compras, cliente.id_carrito,cliente.id_usuario, id],
     (err, res) => {
       if (err) {
         console.log("error: ", err);
