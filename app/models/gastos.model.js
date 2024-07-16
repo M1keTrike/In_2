@@ -4,8 +4,7 @@ const sql = require("../config/db.config.js");
 const Gasto = function(gasto) {
     this.detalles = gasto.detalles;
     this.total = gasto.total;
-    this.fecha = gasto.fecha;
-    this.id_admin = gasto.id_admin;
+     this.id_admin = gasto.id_admin;
 };
 
 Gasto.create = (newGasto, result) => {
@@ -85,8 +84,8 @@ Gasto.getAll = (fecha, result) => {
 
 Gasto.updateById = (id, gasto, result) => {
     sql.query(
-        "UPDATE gastos SET detalles = ?, total = ?, fecha = ?, id_admin = ? WHERE id = ?",
-        [gasto.detalles, gasto.total, gasto.fecha,gasto.id_admin, id],
+        "UPDATE gastos SET detalles = ?, total = ?,id_admin = ? WHERE id = ?",
+        [gasto.detalles, gasto.total,gasto.id_admin, id],
         (err, res) => {
             if (err) {
                 console.log("error: ", err);
