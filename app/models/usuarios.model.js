@@ -1,7 +1,6 @@
 const sql = require("../config/db.config.js");
 const pool = require('../config/db');
 
-
 const Usuario = function(usuario) {
     this.nombre = usuario.nombre;
     this.apellidos = usuario.apellidos;
@@ -65,8 +64,8 @@ Usuario.getAll = (nombre, result) => {
 
 Usuario.updateById = (id, usuario, result) => {
     sql.query(
-        "UPDATE usuarios SET nombre = ?, apellido_paterno = ?, contraseña = ?, direccion = ?, correo_electronico = ?, telefono = ?, roles = ?, apellido_materno WHERE id = ?",
-        [usuario.nombre, usuario.apellidos, usuario.contraseña, usuario.direccion, usuario.correo_electronico, usuario.telefono, usuario.roles,usuario.apellido_materno, id],
+        "UPDATE usuarios SET nombre = ?, apellido_paterno = ?, contraseña = ?, direccion = ?, correo_electronico = ?, telefono = ?, rol = ?, apellido_materno = ? WHERE id = ?",
+        [usuario.nombre, usuario.apellidos, usuario.contraseña, usuario.direccion, usuario.correo_electronico, usuario.telefono, usuario.rol, usuario.apellido_materno, id],
         (err, res) => {
             if (err) {
                 console.log("error: ", err);
@@ -120,7 +119,5 @@ Usuario.removeAll = result => {
         result(null, res);
     });
 };
-
-
 
 module.exports = Usuario;

@@ -24,44 +24,43 @@ exports.register = async (req, res) => {
     apellido_materno
   } = req.body;
 
-  try {
-    const usuarios = await usuario.getAllUsers();
-    const isDuplicated = usuarios.some(usur => usur.nombre === username);
+  const usuarios = await usuario.getAllUsers();
 
-    if (isDuplicated) {
-      res.status(500).send({ message: "Ese usuario ya existe" });
-      return;
-    }
+  let duplicated = false;
 
-    const hashedPassword = bcrypt.hashSync(password, 8);
-
-    const query =
-      "INSERT INTO usuarios (nombre, contraseña, apellido_paterno, direccion, correo_electronico, telefono, rol, apellido_materno) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    db.query(
-      query,
-      [
-        username,
-        hashedPassword,
-        apellido_paterno,
-        direccion,
-        correo_electronico,
-        telefono,
-        rol,
-        apellido_materno,
-      ],
-      (err, result) => {
-        if (err) {
-          res.status(500).send(err);
-          return;
-        }
-        res.status(201).send({ id: result.insertId, username });
-      }
-    );
-  } catch (error) {
-    res.status(500).send(error);
+  usuarios.forEach((usur) => {
+    if (usur.nombre === req.body.username) duplicated = true;
+  });
+  if (duplicated) {
+    res.status(500).send({ message: "Ese usuario ya existe" });
+    return;
   }
-};
 
+  const hashedPassword = bcrypt.hashSync(password, 8);
+
+  const query =
+    "INSERT INTO usuarios (nombre, contraseña, apellido_paterno, direccion, correo_electronico, telefono, rol, apellido_materno) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+  db.query(
+    query,
+    [
+      username,
+      hashedPassword,
+      apellido_paterno,
+      direccion,
+      correo_electronico,
+      telefono,
+      rol,
+      apellido_materno,
+    ],
+    (err, result) => {
+      if (err) {
+        res.status(500).send(err);
+        return;
+      }
+      res.status(201).send({ id: result.insertId, username });
+    }
+  );
+};
 
 exports.login = (req, res) => {
   const { username, password } = req.body;
@@ -95,7 +94,7 @@ exports.login = (req, res) => {
     res.status(200).send({
       message: "Login successful",
       id_user: user.id,
-      user_role: user.rol, 
+      user_role: user.rol, // Cambio de 'user.roles' a 'user.rol'
     });
   });
 };
