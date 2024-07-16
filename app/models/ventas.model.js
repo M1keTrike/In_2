@@ -87,7 +87,7 @@ Venta.getAll = (fecha, result) => {
 Venta.updateById = (id, venta, result) => {
   sql.query(
     "UPDATE ventas SET  estatus = ?, detalles = ?, ingresos = ?, id_cliente = ?, id_admin = ? WHERE id = ?",
-    [venta.cliente, venta.estatus, venta.detalles, venta.ingresos,venta.id_cliente,venta.id_admin, id],
+    [venta.estatus, venta.detalles, venta.ingresos,venta.id_cliente,venta.id_admin, id],
     (err, res) => {
       if (err) {
         console.log("error: ", err);
