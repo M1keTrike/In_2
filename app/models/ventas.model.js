@@ -2,10 +2,11 @@ const sql = require("../config/db.config.js");
 
 // constructor
 const Venta = function (venta) {
-  this.cliente = venta.cliente;
   this.estatus = venta.estatus;
   this.detalles = venta.detalles;
   this.ingresos = venta.ingresos;
+  this.id_cliente = venta.id_cliente;
+  this.id_admin = venta.id_admin;
 };
 
 Venta.create = (newVenta, result) => {
@@ -85,8 +86,8 @@ Venta.getAll = (fecha, result) => {
 
 Venta.updateById = (id, venta, result) => {
   sql.query(
-    "UPDATE ventas SET  cliente = ?, estatus = ?, detalles = ?, ingresos = ? WHERE id = ?",
-    [venta.cliente, venta.estatus, venta.detalles, venta.ingresos, id],
+    "UPDATE ventas SET  cliente = ?, estatus = ?, detalles = ?, ingresos = ?, id_cliente = ?, id_admin = ? WHERE id = ?",
+    [venta.cliente, venta.estatus, venta.detalles, venta.ingresos,venta.id_cliente,venta.id_admin, id],
     (err, res) => {
       if (err) {
         console.log("error: ", err);

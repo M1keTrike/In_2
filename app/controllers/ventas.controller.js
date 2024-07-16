@@ -8,11 +8,11 @@ exports.create = (req, res) => {
   }
 
   const venta = new Venta({
-    cliente: req.body.cliente,
     estatus: req.body.estatus,
     detalles: req.body.detalles,
     ingresos: req.body.ingresos,
     id_admin: req.body.id_admin,
+    id_cliente: req.body.id_cliente,
   });
 
   Venta.create(venta, (err, data) => {
