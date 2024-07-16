@@ -4,8 +4,8 @@ const sql = require("../config/db.config.js");
 const Cliente = function (cliente) {
   this.pagos = cliente.pagos;
   this.compras = cliente.compras;
-  this.carrito = cliente.carrito;
-  this.nombre = cliente.nombre;
+  this.id_carrito = cliente.id_carrito;
+  this.id_usuario = cliente.id_usuario;
 };
 
 Cliente.create = (newCliente, result) => {
@@ -60,8 +60,8 @@ Cliente.getAll = (nombre, result) => {
 
 Cliente.updateById = (id, cliente, result) => {
   sql.query(
-    "UPDATE clientes SET pagos = ?, compras = ?, carrito = ?, nombre = ? WHERE id = ?",
-    [cliente.pagos, cliente.compras, cliente.carrito, cliente.nombre, id],
+    "UPDATE clientes SET pagos = ?, compras = ?, nombre = ? WHERE id = ?",
+    [cliente.pagos, cliente.compras, cliente.nombre, id],
     (err, res) => {
       if (err) {
         console.log("error: ", err);

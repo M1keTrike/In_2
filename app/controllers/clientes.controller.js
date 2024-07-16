@@ -10,8 +10,8 @@ exports.create = (req, res) => {
   const cliente = new Cliente({
     pagos: req.body.pagos,
     compras: req.body.compras,
-    carrito: req.body.carrito,
-    nombre: req.body.nombre,
+    id_carrito:req.body.id_carrito,
+    id_usuario:req.body.id_usuario,
   });
 
   Cliente.create(cliente, (err, data) => {
