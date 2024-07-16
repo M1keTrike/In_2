@@ -60,7 +60,7 @@ Compra.getAll = (fecha, result) => {
 Compra.updateById = (id, compra, result) => {
   sql.query(
     "UPDATE compras SET importe = ?, detalles = ?, id_cliente = ? WHERE id = ?",
-    [compra.importe, compra.detalles, compra.fecha, compra.id_cliente, id],
+    [compra.importe, compra.detalles,compra.id_cliente, id],
     (err, res) => {
       if (err) {
         console.log("error: ", err);
