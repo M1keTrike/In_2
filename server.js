@@ -15,14 +15,14 @@ const apiLimiter = rateLimit({
 
 app.use("/api/", apiLimiter);
 
-const options = {
-  key: fs.readFileSync(
-    "/etc/letsencrypt/live/margaritasdesignapi.integrador.xyz/privkey.pem"
-  ),
-  cert: fs.readFileSync(
-    "/etc/letsencrypt/live/margaritasdesignapi.integrador.xyz/fullchain.pem"
-  ),
-};
+// const options = {
+//   key: fs.readFileSync(
+//     "/etc/letsencrypt/live/margaritasdesignapi.integrador.xyz/privkey.pem"
+//   ),
+//   cert: fs.readFileSync(
+//     "/etc/letsencrypt/live/margaritasdesignapi.integrador.xyz/fullchain.pem"
+//   ),
+// };
 
 const corsOptionsDev = {
   origin: "http://localhost:5173",
@@ -31,18 +31,15 @@ const corsOptionsDev = {
   optionsSuccessStatus: 204,
 };
 
-// const corsOptionsProduction = {
-//   origin: "https://margaritasdesign.integrador.xyz",
-//   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-//   credentials: true,
-//   optionsSuccessStatus: 204,
-// };
-
-
+const corsOptionsProduction = {
+  origin: "https://margaritasdesign.integrador.xyz",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
 
 app.use(cors(corsOptionsDev));
 // app.use(cors(corsOptionsProduction));
-
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -63,7 +60,7 @@ require("./app/routes/usuarios.routes.js")(app);
 require("./app/routes/ventas.routes.js")(app);
 require("./app/routes/pagos.routes.js")(app);
 require("./app/routes/imageRoutes.js")(app);
-require("./app/routes/carrito_productos.routes.js")(app)
+require("./app/routes/carrito_productos.routes.js")(app);
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 

@@ -1,6 +1,5 @@
 const sql = require("../config/db.config.js");
 
-// constructor
 const Producto = function (producto) {
   this.nombre = producto.nombre;
   this.precio = producto.precio;
@@ -9,6 +8,26 @@ const Producto = function (producto) {
   this.tipo = producto.tipo;
   this.id_imagen = producto.id_imagen;
 };
+
+Producto.createWithImage = (image, producto, result) => {
+  sql.query(
+    'CALL CreateProductWithImage(?, ?, ?, ?, ?, ?, ?, ?)',
+    [image.filename, image.path, image.mimetype, producto.nombre, producto.precio, producto.cantidad, producto.acabado, producto.tipo],
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
+      }
+
+      console.log("created product with image: ", res);
+      result(null, res);
+    }
+  );
+};
+
+
+
 
 Producto.create = (newProducto, result) => {
   sql.query("INSERT INTO productos SET ?", newProducto, (err, res) => {

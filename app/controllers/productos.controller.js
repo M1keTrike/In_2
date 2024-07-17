@@ -1,5 +1,41 @@
 const Producto = require("../models/productos.model.js");
 
+
+const imageModel = require("../models/imageModel");
+
+exports.createWithImage = async (req, res) => {
+  if (!req.body) {
+    return res.status(400).send({
+      message: "Content can not be empty!",
+    });
+  }
+
+  const image = {
+    filename: req.file.filename,
+    path: req.file.path,
+    mimetype: req.file.mimetype,
+  };
+
+  const producto = new Producto({
+    nombre: req.body.nombre,
+    precio: req.body.precio,
+    cantidad: req.body.cantidad,
+    acabado: req.body.acabado,
+    tipo: req.body.tipo,
+  });
+
+  Producto.createWithImage(image, producto, (err, data) => {
+    if (err)
+      return res.status(500).send({
+        message:
+          err.message ||
+          "Some error occurred while creating the Product with Image.",
+      });
+
+    res.send(data);
+  });
+};
+
 exports.create = (req, res) => {
   // Validate request
   if (!req.body) {
@@ -124,19 +160,17 @@ exports.deleteAll = (req, res) => {
 };
 
 exports.findAllByIdUser = (req, res) => {
-    
   Producto.getByIdAdmin(req.params.id, (err, data) => {
-      if (err) {
-          if (err.kind === "not_found") {
-              res.status(404).send({
-                  message: `Not found Productos with id_admin ${req.params.id}.`,
-              });
-          } else {
-              res.status(500).send({
-                  message: "Error retrieving Productos with id " + req.params.id,
-              });
-          }
-      } else res.send(data);
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found Productos with id_admin ${req.params.id}.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error retrieving Productos with id " + req.params.id,
+        });
+      }
+    } else res.send(data);
   });
 };
-

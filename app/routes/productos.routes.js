@@ -1,29 +1,39 @@
-module.exports = app => {
+module.exports = (app) => {
   const productos = require("../controllers/productos.controller.js");
-  const authMiddleware = require('../middleware/auth.js')
+  const authMiddleware = require("../middleware/auth.js");
+  const multer = require("multer");
+  const upload = multer({ dest: "app/uploads" });
 
   var router = require("express").Router();
 
+  // Create a new Product with Image
+  router.post(
+    "/",
+    authMiddleware.verifyToken,
+    upload.single("image"),
+    productos.createWithImage
+  );
+
   // Create a new Tutorial
-  router.post("/",authMiddleware.verifyToken, productos.create);
+  router.post("/", authMiddleware.verifyToken, productos.create);
 
   // Retrieve all Tutorials
-  router.get("/",productos.findAll);
+  router.get("/", productos.findAll);
 
   // Retrieve all published Tutorials
-  router.get("/tipo",productos.findByType);
+  router.get("/tipo", productos.findByType);
 
   // Retrieve a single Tutorial with id
-  router.get("/:id",productos.findOne);
+  router.get("/:id", productos.findOne);
 
   // Update a Tutorial with id
-  router.put("/:id",authMiddleware.verifyToken,productos.update);
+  router.put("/:id", authMiddleware.verifyToken, productos.update);
 
   // Delete a Tutorial with id
-  router.delete("/:id",authMiddleware.verifyToken,productos.delete);
+  router.delete("/:id", authMiddleware.verifyToken, productos.delete);
 
   // Delete all Tutorials
-  router.delete("/",authMiddleware.verifyToken,productos.deleteAll);
+  router.delete("/", authMiddleware.verifyToken, productos.deleteAll);
 
-  app.use('/api/productos', router);
+  app.use("/api/productos", router);
 };
