@@ -6,8 +6,8 @@ const Pedido = function (pedido) {
   this.estatus_pago = pedido.estatus_pago;
   this.total = pedido.total;
   this.id_admin = pedido.id_admin;
-  this.fecha = pedido.fecha;
   this.id_cliente = pedido.id_cliente;
+  
 };
 
 Pedido.create = (newPedido, result) => {
@@ -86,56 +86,52 @@ Pedido.getAll = (detalles, result) => {
 };
 
 Pedido.updateById = (id, pedido, result) => {
-    if (pedido.estatus_envio === 1 && pedido.estatus_pago === 1) {
-       
-        sql.query(`CALL handle_pedidos_update(${id})`, (err, res) => {
-            if (err) {
-                console.log("error: ", err);
-                result(null, err);
-                return;
-            }
+  if (pedido.estatus_envio === 1 && pedido.estatus_pago === 1) {
+    sql.query(`CALL handle_pedidos_update(${id})`, (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
 
-            if (res.affectedRows == 0) {
-                result({ kind: "not_found" }, null);
-                return;
-            }
+      if (res.affectedRows == 0) {
+        result({ kind: "not_found" }, null);
+        return;
+      }
 
-            console.log("created venta and deleted pedido: ", { id: id });
-            result(null, { id: id });
-        });
-    } else {
-        
-        sql.query(
-            "UPDATE pedidos SET detalles = ?, estatus_envio = ?, estatus_pago = ?, total = ?, id_admin = ?, fecha = ?, id_cliente = ? WHERE id = ?",
-            [
-                pedido.detalles,
-                pedido.estatus_envio,
-                pedido.estatus_pago,
-                pedido.total,
-                pedido.id_admin,
-                pedido.fecha,
-                pedido.id_cliente,
-                id,
-            ],
-            (err, res) => {
-                if (err) {
-                    console.log("error: ", err);
-                    result(null, err);
-                    return;
-                }
+      console.log("created venta and deleted pedido: ", { id: id });
+      result(null, { id: id });
+    });
+  } else {
+    sql.query(
+      "UPDATE pedidos SET detalles = ?, estatus_envio = ?, estatus_pago = ?, total = ?, id_admin = ?, id_cliente = ? WHERE id = ?",
+      [
+        pedido.detalles,
+        pedido.estatus_envio,
+        pedido.estatus_pago,
+        pedido.total,
+        pedido.id_admin,
+        pedido.id_cliente,
+        id,
+      ],
+      (err, res) => {
+        if (err) {
+          console.log("error: ", err);
+          result(null, err);
+          return;
+        }
 
-                if (res.affectedRows == 0) {
-                    result({ kind: "not_found" }, null);
-                    return;
-                }
+        if (res.affectedRows == 0) {
+          result({ kind: "not_found" }, null);
+          return;
+        }
 
-                console.log("updated pedido: ", { id: id, ...pedido });
-                result(null, { id: id, ...pedido });
-            }
-        );
-    }
+        console.log("updated pedido: ", { id: id, ...pedido });
+        result(null, { id: id, ...pedido });
+      }
+    );
+  }
 };
-
 
 Pedido.remove = (id, result) => {
   sql.query("DELETE FROM pedidos WHERE id = ?", id, (err, res) => {
