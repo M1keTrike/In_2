@@ -15,21 +15,21 @@ const apiLimiter = rateLimit({
 
 app.use("/api/", apiLimiter);
 
-// const options = {
-//   key: fs.readFileSync(
-//     "/etc/letsencrypt/live/margaritasdesignapi.integrador.xyz/privkey.pem"
-//   ),
-//   cert: fs.readFileSync(
-//     "/etc/letsencrypt/live/margaritasdesignapi.integrador.xyz/fullchain.pem"
-//   ),
-// };
-
-const corsOptionsDev = {
-  origin: "http://localhost:5173",
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  credentials: true,
-  optionsSuccessStatus: 204,
+const options = {
+  key: fs.readFileSync(
+    "/etc/letsencrypt/live/margaritasdesignapi.integrador.xyz/privkey.pem"
+  ),
+  cert: fs.readFileSync(
+    "/etc/letsencrypt/live/margaritasdesignapi.integrador.xyz/fullchain.pem"
+  ),
 };
+
+// const corsOptionsDev = {
+//   origin: "http://localhost:5173",
+//   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+//   credentials: true,
+//   optionsSuccessStatus: 204,
+// };
 
 const corsOptionsProduction = {
   origin: "https://margaritasdesign.integrador.xyz",
@@ -58,7 +58,7 @@ require("./app/routes/materia_prima.routes.js")(app);
 require("./app/routes/proveedores.routes.js")(app);
 require("./app/routes/usuarios.routes.js")(app);
 require("./app/routes/ventas.routes.js")(app);
-require("./app/routes/pagos.routes.js")(app);
+require("./app/routes/pedidos.routes.js")(app);
 require("./app/routes/imageRoutes.js")(app);
 require("./app/routes/carrito_productos.routes.js")(app);
 
@@ -73,4 +73,9 @@ const PORT = process.env.PORT || 3000;
 https.createServer(options, app).listen(PORT, () => {
   console.log(`Servidor HTTPS corriendo en el puerto ${PORT}`);
 });
+
+
+// app.listen(PORT, () => {
+//   console.log(`server running in port ${PORT}`);
+// })
 
