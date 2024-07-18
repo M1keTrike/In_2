@@ -24,19 +24,19 @@ const options = {
   ),
 };
 
-// const corsOptionsDev = {
-//   origin: "http://localhost:5173",
-//   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-//   credentials: true,
-//   optionsSuccessStatus: 204,
-// };
-
-const corsOptionsProduction = {
-  origin: "https://margaritasdesign.integrador.xyz",
+const corsOptionsDev = {
+  origin: "http://localhost:5173",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
   optionsSuccessStatus: 204,
 };
+
+// const corsOptionsProduction = {
+//   origin: "https://margaritasdesign.integrador.xyz",
+//   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+//   credentials: true,
+//   optionsSuccessStatus: 204,
+// };
 
 app.use(cors(corsOptionsDev));
 // app.use(cors(corsOptionsProduction));
@@ -74,8 +74,6 @@ https.createServer(options, app).listen(PORT, () => {
   console.log(`Servidor HTTPS corriendo en el puerto ${PORT}`);
 });
 
-
 // app.listen(PORT, () => {
 //   console.log(`server running in port ${PORT}`);
 // })
-
