@@ -1,8 +1,6 @@
 const sql = require("../config/db.config.js");
 
-// constructor
 const Venta = function (venta) {
-  this.estatus = venta.estatus;
   this.detalles = venta.detalles;
   this.ingresos = venta.ingresos;
   this.id_cliente = venta.id_cliente;
@@ -87,7 +85,14 @@ Venta.getAll = (fecha, result) => {
 Venta.updateById = (id, venta, result) => {
   sql.query(
     "UPDATE ventas SET  estatus = ?, detalles = ?, ingresos = ?, id_cliente = ?, id_admin = ? WHERE id = ?",
-    [venta.estatus, venta.detalles, venta.ingresos,venta.id_cliente,venta.id_admin, id],
+    [
+      venta.estatus,
+      venta.detalles,
+      venta.ingresos,
+      venta.id_cliente,
+      venta.id_admin,
+      id,
+    ],
     (err, res) => {
       if (err) {
         console.log("error: ", err);
@@ -135,6 +140,86 @@ Venta.removeAll = (result) => {
     console.log(`deleted ${res.affectedRows} ventas`);
     result(null, res);
   });
+};
+
+Venta.getSalesReport = (periodo, result) => {
+  let dateCondition;
+
+  switch (periodo) {
+    case "dia":
+      dateCondition = "CURDATE()";
+      break;
+    case "semana":
+      dateCondition = "DATE_SUB(CURDATE(), INTERVAL 1 WEEK)";
+      break;
+    case "mes":
+      dateCondition = "DATE_SUB(CURDATE(), INTERVAL 1 MONTH)";
+      break;
+    case "año":
+      dateCondition = "DATE_SUB(CURDATE(), INTERVAL 1 YEAR)";
+      break;
+    default:
+      dateCondition = "CURDATE()";
+  }
+
+  sql.query(
+    `SELECT 
+      COUNT(*) AS ventas,
+      SUM(ingresos) AS ganancias,
+      JSON_ARRAYAGG(detalles) AS detalles
+    FROM ventas
+    WHERE fecha >= ${dateCondition}`,
+    (err, res) => {
+      if (err) {
+        console.log("Error: ", err);
+        result(err, null);
+        return;
+      }
+
+      console.log("Reporte de ventas: ", res);
+      result(null, res[0]);
+    }
+  );
+};
+
+Venta.getExpensesReport = (periodo, result) => {
+  let dateCondition;
+
+  switch (periodo) {
+    case "dia":
+      dateCondition = "CURDATE()";
+      break;
+    case "semana":
+      dateCondition = "DATE_SUB(CURDATE(), INTERVAL 1 WEEK)";
+      break;
+    case "mes":
+      dateCondition = "DATE_SUB(CURDATE(), INTERVAL 1 MONTH)";
+      break;
+    case "año":
+      dateCondition = "DATE_SUB(CURDATE(), INTERVAL 1 YEAR)";
+      break;
+    default:
+      dateCondition = "CURDATE()";
+  }
+
+  sql.query(
+    `SELECT 
+      COUNT(*) AS gastos,
+      SUM(total) AS total,
+      JSON_ARRAYAGG(detalles) AS detalles
+    FROM gastos
+    WHERE fecha >= ${dateCondition}`,
+    (err, res) => {
+      if (err) {
+        console.log("Error: ", err);
+        result(err, null);
+        return;
+      }
+
+      console.log("Reporte de gastos: ", res);
+      result(null, res[0]);
+    }
+  );
 };
 
 module.exports = Venta;

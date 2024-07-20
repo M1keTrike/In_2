@@ -8,7 +8,6 @@ exports.create = (req, res) => {
   }
 
   const venta = new Venta({
-    estatus: req.body.estatus,
     detalles: req.body.detalles,
     ingresos: req.body.ingresos,
     id_admin: req.body.id_admin,
@@ -114,5 +113,33 @@ exports.findAllByIdUser = (req, res) => {
         });
       }
     } else res.send(data);
+  });
+};
+
+exports.getSalesReport = (req, res) => {
+  const periodo = req.params.periodo;
+
+  Venta.getSalesReport(periodo, (err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message ||
+          "Some error occurred while retrieving the sales report.",
+      });
+    else res.send(data);
+  });
+};
+
+exports.getExpensesReport = (req, res) => {
+  const periodo = req.params.periodo;
+
+  Venta.getExpensesReport(periodo, (err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message ||
+          "Some error occurred while retrieving the expenses report.",
+      });
+    else res.send(data);
   });
 };

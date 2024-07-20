@@ -1,16 +1,27 @@
-module.exports = app => {
-    const venta = require("../controllers/ventas.controller.js");
-    const authMiddleware = require('../middleware/auth.js')
+module.exports = (app) => {
+  const venta = require("../controllers/ventas.controller.js");
+  const authMiddleware = require("../middleware/auth.js");
 
-    var router = require("express").Router();
+  var router = require("express").Router();
 
-    router.post("/",authMiddleware.verifyToken,venta.create);
-    router.get("/admin/:id", authMiddleware.verifyToken, venta.findAllByIdUser);
-    router.get("/",authMiddleware.verifyToken,venta.findAll);
-    router.get("/:id",authMiddleware.verifyToken,venta.findOne);
-    router.put("/:id",authMiddleware.verifyToken,venta.update);
-    router.delete("/:id",authMiddleware.verifyToken,venta.delete);
-    router.delete("/",authMiddleware.verifyToken,venta.deleteAll);
+  router.post("/", authMiddleware.verifyToken, venta.create);
+  router.get("/admin/:id", authMiddleware.verifyToken, venta.findAllByIdUser);
+  router.get("/", authMiddleware.verifyToken, venta.findAll);
+  router.get("/:id", authMiddleware.verifyToken, venta.findOne);
+  router.put("/:id", authMiddleware.verifyToken, venta.update);
+  router.delete("/:id", authMiddleware.verifyToken, venta.delete);
+  router.delete("/", authMiddleware.verifyToken, venta.deleteAll);
 
-    app.use('/api/ventas', router);
+  router.get(
+    "/reporte/ventas/:periodo",
+    authMiddleware.verifyToken,
+    venta.getSalesReport
+  );
+  router.get(
+    "/reporte/gastos/:periodo",
+    authMiddleware.verifyToken,
+    venta.getExpensesReport
+  );
+
+  app.use("/api/ventas", router);
 };
