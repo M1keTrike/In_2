@@ -5,7 +5,7 @@ const dotenv = require("dotenv");
 const usuario = require("../models/usuarios.model.js");
 dotenv.config();
 
-// Registro de usuario
+
 exports.register = async (req, res) => {
   if (!req.body) {
     res.status(400).send({
@@ -30,7 +30,7 @@ exports.register = async (req, res) => {
 
     const duplicated = usuarios.some((usur) => usur.nombre === username);
     if (duplicated) {
-      res.status(409).send({ message: "Ese usuario ya existe" }); // Usar 409 Conflict para usuario duplicado
+      res.status(409).send({ message: "Ese usuario ya existe" }); 
       return;
     }
 
@@ -63,7 +63,7 @@ exports.register = async (req, res) => {
   }
 };
 
-// Login de usuario
+
 exports.login = (req, res) => {
   const { username, password } = req.body;
 
