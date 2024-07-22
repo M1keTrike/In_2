@@ -3,17 +3,11 @@ const https = require("https");
 const fs = require("fs");
 const cors = require("cors");
 const app = express();
-const rateLimit = require("express-rate-limit");
 const path = require("path");
+const { apiLimiter } = require('./app/utils/rateLimiters.js');
 
-const apiLimiter = rateLimit({
-  windowMs: 60 * 1000,
+app.use("/api" , apiLimiter);
 
-  max: 100,
-  message: "Too many requests from this IP, please try again later.",
-});
-
-app.use("/api/", apiLimiter);
 
 const options = {
   key: fs.readFileSync(
