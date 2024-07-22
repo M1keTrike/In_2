@@ -27,7 +27,7 @@ const postLimiter = rateLimit({
 
 const getLimiter = rateLimit({
   windowMs: 10 * 1000, // 10 segundos
-  max: 100,
+  max: 10,
   message: "Too many requests from this IP, please try again later.",
 });
 
