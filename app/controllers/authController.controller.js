@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const usuario = require("../models/usuarios.model.js");
 dotenv.config();
 
+// Registro de usuario
 exports.register = async (req, res) => {
   if (!req.body) {
     res.status(400).send({
@@ -24,51 +25,57 @@ exports.register = async (req, res) => {
     apellido_materno
   } = req.body;
 
-  const usuarios = await usuario.getAllUsers();
+  try {
+    const usuarios = await usuario.getAllUsers();
 
-  let duplicated = false;
-
-  usuarios.forEach((usur) => {
-    if (usur.nombre === req.body.username) duplicated = true;
-  });
-  if (duplicated) {
-    res.status(500).send({ message: "Ese usuario ya existe" });
-    return;
-  }
-
-  const hashedPassword = bcrypt.hashSync(password, 8);
-
-  const query =
-    "INSERT INTO usuarios (nombre, contraseña, apellido_paterno, direccion, correo_electronico, telefono, rol, apellido_materno) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-  db.query(
-    query,
-    [
-      username,
-      hashedPassword,
-      apellido_paterno,
-      direccion,
-      correo_electronico,
-      telefono,
-      rol,
-      apellido_materno,
-    ],
-    (err, result) => {
-      if (err) {
-        res.status(500).send(err);
-        return;
-      }
-      res.status(201).send({ id: result.insertId, username });
+    const duplicated = usuarios.some((usur) => usur.nombre === username);
+    if (duplicated) {
+      res.status(409).send({ message: "Ese usuario ya existe" }); // Usar 409 Conflict para usuario duplicado
+      return;
     }
-  );
+
+    const hashedPassword = bcrypt.hashSync(password, 8);
+
+    const query =
+      "INSERT INTO usuarios (nombre, contraseña, apellido_paterno, direccion, correo_electronico, telefono, rol, apellido_materno) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    db.query(
+      query,
+      [
+        username,
+        hashedPassword,
+        apellido_paterno,
+        direccion,
+        correo_electronico,
+        telefono,
+        rol,
+        apellido_materno,
+      ],
+      (err, result) => {
+        if (err) {
+          res.status(500).send({ message: err.message });
+          return;
+        }
+        res.status(201).send({ id: result.insertId, username });
+      }
+    );
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
 };
 
+// Login de usuario
 exports.login = (req, res) => {
   const { username, password } = req.body;
+
+  if (!username || !password) {
+    res.status(400).send({ message: "Username and password are required" });
+    return;
+  }
 
   const query = "SELECT * FROM usuarios WHERE nombre = ?";
   db.query(query, [username], (err, results) => {
     if (err) {
-      res.status(500).send(err);
+      res.status(500).send({ message: err.message });
       return;
     }
     if (results.length === 0) {
@@ -77,7 +84,6 @@ exports.login = (req, res) => {
     }
 
     const user = results[0];
-
     const passwordIsValid = bcrypt.compareSync(password, user.contraseña);
     if (!passwordIsValid) {
       res.status(401).send({ token: null, message: "Invalid Password" });
@@ -87,14 +93,14 @@ exports.login = (req, res) => {
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
       expiresIn: 86400,
     });
-    
+
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Expose-Headers", "Authorization");
     res.setHeader("Authorization", "Bearer " + token);
     res.status(200).send({
       message: "Login successful",
       id_user: user.id,
-      user_role: user.rol, // Cambio de 'user.roles' a 'user.rol'
+      user_role: user.rol,
     });
   });
 };
