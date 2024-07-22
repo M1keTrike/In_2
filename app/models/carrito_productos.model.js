@@ -8,16 +8,27 @@ const CarritoProductos = function (carrito_productos) {
 };
 
 CarritoProductos.create = (newCarrito_productos, result) => {
-  sql.query("INSERT INTO carrito_productos SET ?", newCarrito_productos, (err, res) => {
-    if (err) {
-      console.log("error : ", err);
-      result(err, null);
-      return;
-    }
+  if (!newCarrito_productos.carrito_id || !newCarrito_productos.producto_id) {
+    result({ message: "Missing carrito_id or producto_id" }, null);
+    return;
+  }
 
-    console.log("created productoCarrito: ", {...newCarrito_productos });
-    result(null, {...newCarrito_productos });
-  });
+  sql.query(
+    "CALL insert_or_update_carrito_productos(?, ?, ?)",
+    [newCarrito_productos.carrito_id, newCarrito_productos.producto_id, 1],
+    (err, res) => {
+      if (err) {
+        console.log("Error executing stored procedure: ", err);
+        result(err, null);
+        return;
+      }
+
+      console.log("Procedure executed successfully: ", {
+        ...newCarrito_productos,
+      });
+      result(null, { ...newCarrito_productos });
+    }
+  );
 };
 
 CarritoProductos.findProductsOfId = (id, result) => {
@@ -29,7 +40,10 @@ CarritoProductos.findProductsOfId = (id, result) => {
     [id],
     (err, res) => {
       if (err) {
-        console.log("Error al consultar productos relacionados al carrito:", err);
+        console.log(
+          "Error al consultar productos relacionados al carrito:",
+          err
+        );
         result(err, null);
         return;
       }
@@ -81,29 +95,32 @@ CarritoProductos.updateCantById = (id, cant, result) => {
         return;
       }
 
-      console.log("cantidad actualizada del producto : ", { id: id});
+      console.log("cantidad actualizada del producto : ", { id: id });
       result(null, { id: id });
     }
   );
 };
 
 CarritoProductos.removeByIdProduct = (id, result) => {
-  sql.query("DELETE FROM carrito_productos WHERE producto_id = ?", id, (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(null, err);
-      return;
-    }
+  sql.query(
+    "DELETE FROM carrito_productos WHERE producto_id = ?",
+    id,
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
 
-    if (res.affectedRows == 0) {
-      // not found Tutorial with the id
-      result({ kind: "not_found" }, null);
-      return;
-    }
+      if (res.affectedRows == 0) {
+        result({ kind: "not_found" }, null);
+        return;
+      }
 
-    console.log("deleted producto with id: ", id);
-    result(null, res);
-  });
+      console.log("deleted producto with id: ", id);
+      result(null, res);
+    }
+  );
 };
 
 CarritoProductos.removeAll = (result) => {
@@ -117,6 +134,25 @@ CarritoProductos.removeAll = (result) => {
     console.log(`deleted ${res.affectedRows} productos`);
     result(null, res);
   });
+};
+
+CarritoProductos.cleanCarritoById = (id, result) => {
+  sql.query(
+    "DELETE FROM carrito_productos where carrito_id = ?",
+    id,
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+
+      console.log(
+        `deleted ${res.affectedRows} productos del carrito con id${id}`
+      );
+      result(null, res);
+    }
+  );
 };
 
 module.exports = CarritoProductos;

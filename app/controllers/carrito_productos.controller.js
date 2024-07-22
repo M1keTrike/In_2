@@ -1,14 +1,11 @@
 const CarritoProductos = require("../models/carrito_productos.model.js");
 
-
 exports.create = (req, res) => {
-  
   if (!req.body) {
     res.status(400).send({
       message: "Content can not be empty!",
     });
   }
-
 
   const carritoProductos = new CarritoProductos({
     carrito_id: req.body.carrito_id,
@@ -16,7 +13,6 @@ exports.create = (req, res) => {
     cantidad: req.body.cantidad,
   });
 
-  
   CarritoProductos.create(carritoProductos, (err, data) => {
     if (err)
       res.status(500).send({
@@ -27,27 +23,23 @@ exports.create = (req, res) => {
   });
 };
 
-
 exports.findProducts = (req, res) => {
-    CarritoProductos.findProductsOfId(req.params.id, (err, data) => {
-      if (err) {
-        if (err.kind === "not_found") {
-          res.status(404).send({
-            message: `Not found products with id ${req.params.id}.`,
-          });
-        } else {
-          res.status(500).send({
-            message: "Error retrieving products with id " + req.params.id,
-          });
-        }
-      } else res.send(data);
-    });
-  };
-
-
+  CarritoProductos.findProductsOfId(req.params.id, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found products with id ${req.params.id}.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error retrieving products with id " + req.params.id,
+        });
+      }
+    } else res.send(data);
+  });
+};
 
 exports.update = (req, res) => {
- 
   if (!req.body) {
     res.status(400).send({
       message: "Content can not be empty!",
@@ -56,19 +48,23 @@ exports.update = (req, res) => {
 
   console.log(req.body);
 
-  CarritoProductos.updateCantById(req.params.id, req.body.cantidad, (err, data) => {
-    if (err) {
-      if (err.kind === "not_found") {
-        res.status(404).send({
-          message: `Not found Carrito with id ${req.params.id}.`,
-        });
-      } else {
-        res.status(500).send({
-          message: "Error updating Carrito with id " + req.params.id,
-        });
-      }
-    } else res.send(data);
-  });
+  CarritoProductos.updateCantById(
+    req.params.id,
+    req.body.cantidad,
+    (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Not found Carrito with id ${req.params.id}.`,
+          });
+        } else {
+          res.status(500).send({
+            message: "Error updating Carrito with id " + req.params.id,
+          });
+        }
+      } else res.send(data);
+    }
+  );
 };
 
 exports.delete = (req, res) => {
@@ -87,7 +83,6 @@ exports.delete = (req, res) => {
   });
 };
 
-
 exports.deleteAll = (req, res) => {
   CarritoProductos.removeAll((err, data) => {
     if (err)
@@ -99,6 +94,18 @@ exports.deleteAll = (req, res) => {
   });
 };
 
-
-
-
+exports.cleanById = (req, res) => {
+  CarritoProductos.cleanCarritoById(req.params.id, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found carrito with id ${req.params.id}.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Could not clean carrito with id " + req.params.id,
+        });
+      }
+    } else res.send({ message: `carrito was cleaned successfully!` });
+  });
+};

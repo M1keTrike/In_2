@@ -12,8 +12,8 @@ exports.create = (req, res) => {
   const carrito = new Carrito({
     total: req.body.total,
     importe: req.body.importe,
-    id_cliente: req.body.id_cliente
-    });
+    id_cliente: req.body.id_cliente,
+  });
 
   // Save Administrador in the database
   Carrito.create(carrito, (err, data) => {
@@ -55,8 +55,6 @@ exports.findOne = (req, res) => {
     } else res.send(data);
   });
 };
-
-
 
 exports.update = (req, res) => {
   // Validate Request
@@ -112,37 +110,49 @@ exports.deleteAll = (req, res) => {
 };
 
 exports.findAllByIdUser = (req, res) => {
-    
   Carrito.getByIdCliente(req.params.id, (err, data) => {
-      if (err) {
-          if (err.kind === "not_found") {
-              res.status(404).send({
-                  message: `Not found Carritos with id_cliente ${req.params.id}.`,
-              });
-          } else {
-              res.status(500).send({
-                  message: "Error retrieving Carritos with id " + req.params.id,
-              });
-          }
-      } else res.send(data);
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found Carritos with id_cliente ${req.params.id}.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error retrieving Carritos with id " + req.params.id,
+        });
+      }
+    } else res.send(data);
   });
 };
 
 exports.findCarritoCliente = (req, res) => {
-    
   Carrito.getCarritoUsuarioByIdCliente(req.params.id, (err, data) => {
-      if (err) {
-          if (err.kind === "not_found") {
-              res.status(404).send({
-                  message: `Not found Carrito with id_cliente ${req.params.id}.`,
-              });
-          } else {
-              res.status(500).send({
-                  message: "Error retrieving Carrito with id " + req.params.id,
-              });
-          }
-      } else res.send(data);
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found Carrito with id_cliente ${req.params.id}.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error retrieving Carrito with id " + req.params.id,
+        });
+      }
+    } else res.send(data);
   });
 };
 
-
+exports.cleanById = (req, res) => {
+  Carrito.cleanValuesById(req.params.id, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found Carrito with id ${req.params.id}.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error cleaning Carrito with id " + req.params.id,
+        });
+      }
+    } else res.send(data);
+  });
+};

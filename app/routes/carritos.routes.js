@@ -13,57 +13,44 @@ module.exports = (app) => {
   router.get(
     "/cliente/:id",
     authMiddleware.verifyToken,
-    getLimiter,  
+    getLimiter,
     carrito.findAllByIdUser
   );
 
-  router.post(
-    "/",
-    authMiddleware.verifyToken,
-    postLimiter,  
-    carrito.create
-  );
+  router.post("/", authMiddleware.verifyToken, postLimiter, carrito.create);
 
   router.get(
     "/carrito/cliente/:id",
     authMiddleware.verifyToken,
-    getLimiter,  
+    getLimiter,
     carrito.findCarritoCliente
   );
 
-  router.get(
-    "/",
-    authMiddleware.verifyToken,
-    getLimiter,  
-    carrito.findAll
-  );
+  router.get("/", authMiddleware.verifyToken, getLimiter, carrito.findAll);
 
-  router.get(
-    "/:id",
-    authMiddleware.verifyToken,
-    getLimiter,  
-    carrito.findOne
-  );
+  router.get("/:id", authMiddleware.verifyToken, getLimiter, carrito.findOne);
 
-  router.put(
-    "/:id",
-    authMiddleware.verifyToken,
-    updateLimiter,  
-    carrito.update
-  );
+  router.put("/:id", authMiddleware.verifyToken, updateLimiter, carrito.update);
 
   router.delete(
     "/:id",
     authMiddleware.verifyToken,
-    deleteLimiter,  
+    deleteLimiter,
     carrito.delete
   );
 
   router.delete(
     "/",
     authMiddleware.verifyToken,
-    deleteLimiter, 
+    deleteLimiter,
     carrito.deleteAll
+  );
+
+  router.put(
+    "/clean/:id",
+    authMiddleware.verifyToken,
+    updateLimiter,
+    carrito.cleanById
   );
 
   app.use("/api/carritos", router);
