@@ -1,7 +1,7 @@
 module.exports = (app) => {
   const authMiddleware = require("../middleware/auth.js");
   const administrador = require("../controllers/administrador.controller.js");
-  const { deleteLimiter, updateLimiter, postLimiter, getLimiter } = require('./rateLimiters');
+  const { deleteLimiter, updateLimiter, postLimiter, getLimiter } = require('../utils/rateLimiters.js');
 
   var router = require("express").Router();
 

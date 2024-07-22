@@ -3,7 +3,7 @@ module.exports = (app) => {
   const authMiddleware = require("../middleware/auth.js");
   const multer = require("multer");
   const upload = multer({ dest: "app/uploads" });
-  const { deleteLimiter, updateLimiter, postLimiter, getLimiter } = require('./rateLimiters');
+  const { deleteLimiter, updateLimiter, postLimiter, getLimiter } = require('../utils/rateLimiters.js');
 
   var router = require("express").Router();
 

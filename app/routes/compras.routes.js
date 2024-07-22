@@ -1,7 +1,7 @@
 module.exports = app => {
     const compra = require("../controllers/compras.controller.js");
     const authMiddleware = require('../middleware/auth.js')
-    const { deleteLimiter, updateLimiter, postLimiter, getLimiter } = require('./rateLimiters');
+    const { deleteLimiter, updateLimiter, postLimiter, getLimiter } = require('../utils/rateLimiters.js');
 
     var router = require("express").Router();
 
