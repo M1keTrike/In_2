@@ -5,26 +5,16 @@ module.exports = (app) => {
 
   var router = require("express").Router();
 
-  router.post("/", authMiddleware.verifyToken, venta.create), postLimiter;
-  router.get("/admin/:id", authMiddleware.verifyToken, venta.findAllByIdUser, getLimiter);
-  router.get("/", authMiddleware.verifyToken, venta.findAll, getLimiter);
-  router.get("/:id", authMiddleware.verifyToken, venta.findOne, getLimiter);
-  router.put("/:id", authMiddleware.verifyToken, venta.update, updateLimiter);
-  router.delete("/:id", authMiddleware.verifyToken, venta.delete, deleteLimiter);
-  router.delete("/", authMiddleware.verifyToken, venta.deleteAll, deleteLimiter);
+  router.post("/", authMiddleware.verifyToken, postLimiter, venta.create);
+  router.get("/admin/:id", authMiddleware.verifyToken, getLimiter, venta.findAllByIdUser);
+  router.get("/", authMiddleware.verifyToken, getLimiter, venta.findAll);
+  router.get("/:id", authMiddleware.verifyToken, getLimiter, venta.findOne);
+  router.put("/:id", authMiddleware.verifyToken, updateLimiter, venta.update);
+  router.delete("/:id", authMiddleware.verifyToken, deleteLimiter, venta.delete);
+  router.delete("/", authMiddleware.verifyToken, deleteLimiter, venta.deleteAll);
 
-  router.get(
-    "/reporte/ventas/:periodo",
-    authMiddleware.verifyToken,
-    venta.getSalesReport
-    ,getLimiter
-  );
-  router.get(
-    "/reporte/gastos/:periodo",
-    authMiddleware.verifyToken,
-    venta.getExpensesReport
-    ,getLimiter
-  );
+  router.get("/reporte/ventas/:periodo", authMiddleware.verifyToken, getLimiter, venta.getSalesReport);
+  router.get("/reporte/gastos/:periodo", authMiddleware.verifyToken, getLimiter, venta.getExpensesReport);
 
   app.use("/api/ventas", router);
 };

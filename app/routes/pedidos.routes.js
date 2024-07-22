@@ -5,13 +5,13 @@ module.exports = app => {
 
     var router = require("express").Router();
 
-    router.post("/", authMiddleware.verifyToken, pedido.create,postLimiter);
-    router.get("/admin/:id", authMiddleware.verifyToken, pedido.findAllByIdUser,getLimiter);
-    router.get("/", authMiddleware.verifyToken, pedido.findAll,getLimiter);
-    router.get("/:id", authMiddleware.verifyToken, pedido.findOne,getLimiter);
-    router.put("/:id", authMiddleware.verifyToken, pedido.update,updateLimiter);
-    router.delete("/:id", authMiddleware.verifyToken, pedido.delete,deleteLimiter);
-    router.delete("/", authMiddleware.verifyToken, pedido.deleteAll,deleteLimiter);
+    router.post("/", authMiddleware.verifyToken, postLimiter, pedido.create);
+    router.get("/admin/:id", authMiddleware.verifyToken, getLimiter, pedido.findAllByIdUser);
+    router.get("/", authMiddleware.verifyToken, getLimiter, pedido.findAll);
+    router.get("/:id", authMiddleware.verifyToken, getLimiter, pedido.findOne);
+    router.put("/:id", authMiddleware.verifyToken, updateLimiter, pedido.update);
+    router.delete("/:id", authMiddleware.verifyToken, deleteLimiter, pedido.delete);
+    router.delete("/", authMiddleware.verifyToken, deleteLimiter, pedido.deleteAll);
 
     app.use('/api/pedidos', router);
 };
