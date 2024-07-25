@@ -99,7 +99,7 @@ exports.login = (req, res) => {
       message: "Login successful",
       id_user: user.id,
       user_role: user.rol,
-      user_name: user.username,
+      user_name: user.nombre,
     });
   });
 };
