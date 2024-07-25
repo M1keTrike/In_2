@@ -5,7 +5,6 @@ const dotenv = require("dotenv");
 const usuario = require("../models/usuarios.model.js");
 dotenv.config();
 
-
 exports.register = async (req, res) => {
   if (!req.body) {
     res.status(400).send({
@@ -22,7 +21,7 @@ exports.register = async (req, res) => {
     correo_electronico,
     telefono,
     rol,
-    apellido_materno
+    apellido_materno,
   } = req.body;
 
   try {
@@ -30,7 +29,7 @@ exports.register = async (req, res) => {
 
     const duplicated = usuarios.some((usur) => usur.nombre === username);
     if (duplicated) {
-      res.status(409).send({ message: "Ese usuario ya existe" }); 
+      res.status(409).send({ message: "Ese usuario ya existe" });
       return;
     }
 
@@ -62,7 +61,6 @@ exports.register = async (req, res) => {
     res.status(500).send({ message: error.message });
   }
 };
-
 
 exports.login = (req, res) => {
   const { username, password } = req.body;
@@ -101,6 +99,7 @@ exports.login = (req, res) => {
       message: "Login successful",
       id_user: user.id,
       user_role: user.rol,
+      user_name: user.username,
     });
   });
 };
