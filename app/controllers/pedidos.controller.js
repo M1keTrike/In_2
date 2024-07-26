@@ -8,7 +8,7 @@ exports.create = (req, res) => {
     }
 
     const pedido = new Pedido({
-        detalles: req.body.detalles,
+        id_detalles: req.body.id_detalles,
         estatus_envio: req.body.estatus_envio,
         estatus_pago: req.body.estatus_pago,
         total: req.body.total,

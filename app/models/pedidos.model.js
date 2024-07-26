@@ -1,7 +1,7 @@
 const sql = require("../config/db.config.js");
 
 const Pedido = function (pedido) {
-  this.detalles = pedido.detalles;
+  this.id_detalles = pedido.id_detalles;
   this.estatus_envio = pedido.estatus_envio;
   this.estatus_pago = pedido.estatus_pago;
   this.total = pedido.total;
@@ -104,7 +104,7 @@ Pedido.updateById = (id, pedido, result) => {
     });
   } else {
     sql.query(
-      "UPDATE pedidos SET detalles = ?, estatus_envio = ?, estatus_pago = ?, total = ?, id_admin = ?, id_cliente = ? WHERE id = ?",
+      "UPDATE pedidos SET id_detalles = ?, estatus_envio = ?, estatus_pago = ?, total = ?, id_admin = ?, id_cliente = ? WHERE id = ?",
       [
         pedido.detalles,
         pedido.estatus_envio,
