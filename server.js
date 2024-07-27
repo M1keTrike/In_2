@@ -55,7 +55,7 @@ require("./app/routes/pedidos.routes.js")(app);
 require("./app/routes/imageRoutes.js")(app);
 require("./app/routes/carrito_productos.routes.js")(app);
 
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 
 const authRoutes = require("./app/routes/auth.routes.js");
 
