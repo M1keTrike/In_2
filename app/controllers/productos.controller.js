@@ -36,14 +36,14 @@ exports.createWithImage = async (req, res) => {
 };
 
 exports.create = (req, res) => {
-  // Validate request
+
   if (!req.body) {
     res.status(400).send({
       message: "Content can not be empty!",
     });
   }
 
-  // Create a Producto
+ 
   const producto = new Producto({
     nombre: req.body.nombre,
     precio: req.body.precio,
@@ -53,7 +53,7 @@ exports.create = (req, res) => {
     id_imagen: req.body.id_imagen,
   });
 
-  // Save Producto in the database
+
   Producto.create(producto, (err, data) => {
     if (err)
       res.status(500).send({
@@ -77,7 +77,7 @@ exports.findAll = (req, res) => {
   });
 };
 
-// Find a single Producto by Id
+
 exports.findOne = (req, res) => {
   Producto.findById(req.params.id, (err, data) => {
     if (err) {
@@ -106,7 +106,7 @@ exports.findByType = (req, res) => {
 };
 
 exports.update = (req, res) => {
-  // Validate Request
+
   if (!req.body) {
     res.status(400).send({
       message: "Content can not be empty!",
@@ -146,7 +146,6 @@ exports.delete = (req, res) => {
   });
 };
 
-// Delete all Productos from the database.
 exports.deleteAll = (req, res) => {
   Producto.removeAll((err, data) => {
     if (err)

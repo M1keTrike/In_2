@@ -151,28 +151,38 @@ Venta.getSalesReport = (periodo, result) => {
     case "año":
       dateCondition = "DATE_SUB(CURDATE(), INTERVAL 1 YEAR)";
       break;
+    case "mespasado":
+      dateCondition = `fecha BETWEEN DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 1 MONTH), '%Y-%m-01') AND LAST_DAY(DATE_SUB(CURDATE(), INTERVAL 1 MONTH))`;
+      break;
     default:
       dateCondition = "CURDATE()";
   }
 
-  sql.query(
-    `SELECT 
-      COUNT(*) AS ventas,
-      SUM(ingresos) AS ganancias,
-      JSON_ARRAYAGG(detalles) AS detalles
-    FROM ventas
-    WHERE fecha >= ${dateCondition}`,
-    (err, res) => {
-      if (err) {
-        console.log("Error: ", err);
-        result(err, null);
-        return;
-      }
+  const query =
+    periodo === "mespasado"
+      ? `SELECT 
+        COUNT(*) AS ventas,
+        SUM(ingresos) AS ganancias,
+        JSON_ARRAYAGG(detalles) AS detalles
+      FROM ventas
+      WHERE ${dateCondition}`
+      : `SELECT 
+        COUNT(*) AS ventas,
+        SUM(ingresos) AS ganancias,
+        JSON_ARRAYAGG(detalles) AS detalles
+      FROM ventas
+      WHERE fecha >= ${dateCondition}`;
 
-      console.log("Reporte de ventas: ", res);
-      result(null, res[0]);
+  sql.query(query, (err, res) => {
+    if (err) {
+      console.log("Error: ", err);
+      result(err, null);
+      return;
     }
-  );
+
+    console.log("Reporte de ventas: ", res);
+    result(null, res[0]);
+  });
 };
 
 Venta.getExpensesReport = (periodo, result) => {

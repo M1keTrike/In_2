@@ -26,7 +26,7 @@ exports.create = (req, res) => {
 };
 
 exports.findProducts = (req, res) => {
-  DetallePedidos.findProductsOfPedido(req.params.id, (err, data) => {
+  DetallePedidos.findProductsOfPedido(req.params.id_pedido, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({

@@ -56,6 +56,7 @@ require("./app/routes/ventas.routes.js")(app);
 require("./app/routes/pedidos.routes.js")(app);
 require("./app/routes/imageRoutes.js")(app);
 require("./app/routes/carrito_productos.routes.js")(app);
+require("./app/routes/detalle_pedidos.routes.js")(app);
 
 const authRoutes = require("./app/routes/auth.routes.js");
 

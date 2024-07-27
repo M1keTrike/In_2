@@ -33,10 +33,23 @@ CarritoProductos.create = (newCarrito_productos, result) => {
 
 CarritoProductos.findProductsOfId = (id, result) => {
   sql.query(
-    `SELECT carrito_productos.cantidad, productos.id,productos.nombre, productos.tipo, productos.precio, productos.acabado
-     FROM carrito_productos
-     JOIN productos ON carrito_productos.producto_id = productos.id
-     WHERE carrito_productos.carrito_id = ?`,
+    `SELECT 
+      carrito_productos.cantidad, 
+      productos.id,
+      productos.nombre, 
+      productos.tipo, 
+      productos.precio, 
+      productos.acabado, 
+            images.filename
+        FROM 
+            carrito_productos
+        JOIN 
+            productos ON carrito_productos.producto_id = productos.id
+        JOIN 
+            images ON productos.id_imagen = images.id
+        WHERE 
+            carrito_productos.carrito_id = ?
+        `,
     [id],
     (err, res) => {
       if (err) {
