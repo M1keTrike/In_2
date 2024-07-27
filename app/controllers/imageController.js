@@ -1,4 +1,4 @@
-const imageModel = require('../models/imageModel');
+const imageModel = require("../models/imageModel");
 
 const createImage = async (req, res) => {
   try {
@@ -14,13 +14,13 @@ const createImage = async (req, res) => {
   }
 };
 
-const baseURL = 'https://margaritasdesignapi.integrador.xyz/uploads/';
+const baseURL = "https://margaritasdesignapi.integrador.xyz/uploads/";
 
 const getImageById = async (req, res) => {
   try {
     const image = await imageModel.getImageById(req.params.id);
     if (!image) {
-      return res.status(404).json({ error: 'Image not found' });
+      return res.status(404).json({ error: "Image not found" });
     }
     image.url = baseURL + image.filename;
     res.status(200).json(image);
@@ -32,7 +32,7 @@ const getImageById = async (req, res) => {
 const getAllImages = async (req, res) => {
   try {
     const images = await imageModel.getAllImages();
-    images.forEach(image => {
+    images.forEach((image) => {
       image.url = baseURL + image.filename;
     });
     res.status(200).json(images);
@@ -40,7 +40,6 @@ const getAllImages = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
 
 const updateImage = async (req, res) => {
   try {
@@ -50,7 +49,7 @@ const updateImage = async (req, res) => {
       mimetype: req.file.mimetype,
     };
     await imageModel.updateImage(req.params.id, image);
-    res.status(200).json({ message: 'Image updated' });
+    res.status(200).json({ message: "Image updated" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -59,7 +58,7 @@ const updateImage = async (req, res) => {
 const deleteImage = async (req, res) => {
   try {
     await imageModel.deleteImage(req.params.id);
-    res.status(200).json({ message: 'Image deleted' });
+    res.status(200).json({ message: "Image deleted" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

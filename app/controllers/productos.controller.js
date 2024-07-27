@@ -1,6 +1,5 @@
 const Producto = require("../models/productos.model.js");
 
-
 const imageModel = require("../models/imageModel");
 
 exports.createWithImage = async (req, res) => {

@@ -143,3 +143,15 @@ exports.getExpensesReport = (req, res) => {
     else res.send(data);
   });
 };
+
+exports.getNotifications = (req, res) => {
+  Venta.getNotifications((err, data) => {
+    if (err) {
+      res.status(500).send({
+        message: err.message || "Ocurrió un error al obtener las notificaciones."
+      });
+    } else {
+      res.send(data);
+    }
+  });
+};

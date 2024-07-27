@@ -4,10 +4,9 @@ const fs = require("fs");
 const cors = require("cors");
 const app = express();
 const path = require("path");
-const { apiLimiter } = require('./app/utils/rateLimiters.js');
+const { apiLimiter } = require("./app/utils/rateLimiters.js");
 
-app.use("/api" , apiLimiter);
-
+app.use("/api", apiLimiter);
 
 const options = {
   key: fs.readFileSync(

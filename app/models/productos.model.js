@@ -11,8 +11,17 @@ const Producto = function (producto) {
 
 Producto.createWithImage = (image, producto, result) => {
   sql.query(
-    'CALL CreateProductWithImage(?, ?, ?, ?, ?, ?, ?, ?)',
-    [image.filename, image.path, image.mimetype, producto.nombre, producto.precio, producto.cantidad, producto.acabado, producto.tipo],
+    "CALL CreateProductWithImage(?, ?, ?, ?, ?, ?, ?, ?)",
+    [
+      image.filename,
+      image.path,
+      image.mimetype,
+      producto.nombre,
+      producto.precio,
+      producto.cantidad,
+      producto.acabado,
+      producto.tipo,
+    ],
     (err, res) => {
       if (err) {
         console.log("error: ", err);
@@ -25,9 +34,6 @@ Producto.createWithImage = (image, producto, result) => {
     }
   );
 };
-
-
-
 
 Producto.create = (newProducto, result) => {
   sql.query("INSERT INTO productos SET ?", newProducto, (err, res) => {
@@ -61,7 +67,7 @@ Producto.findById = (id, result) => {
   });
 };
 
-const baseURL = 'https://margaritasdesign.integrador.xyz/uploads/';
+const baseURL = "https://margaritasdesign.integrador.xyz/uploads/";
 
 Producto.getAll = (nombre, result) => {
   let query = `SELECT productos.*, images.filename FROM productos JOIN images ON productos.id_imagen = images.id`;
@@ -77,7 +83,7 @@ Producto.getAll = (nombre, result) => {
       return;
     }
 
-    const productosConURL = res.map(producto => {
+    const productosConURL = res.map((producto) => {
       producto.url = baseURL + producto.filename;
       return producto;
     });
@@ -86,7 +92,6 @@ Producto.getAll = (nombre, result) => {
     result(null, productosConURL);
   });
 };
-
 
 Producto.getByType = (tipo, result) => {
   sql.query(`SELECT * FROM productos WHERE tipo=${tipo}`, (err, res) => {

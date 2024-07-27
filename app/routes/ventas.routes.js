@@ -15,6 +15,7 @@ module.exports = (app) => {
 
   router.get("/reporte/ventas/:periodo", authMiddleware.verifyToken, getLimiter, venta.getSalesReport);
   router.get("/reporte/gastos/:periodo", authMiddleware.verifyToken, getLimiter, venta.getExpensesReport);
+  router.get("/home/notificaciones", authMiddleware.verifyToken, getLimiter, venta.getNotifications);
 
   app.use("/api/ventas", router);
 };

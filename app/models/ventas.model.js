@@ -215,4 +215,42 @@ Venta.getExpensesReport = (periodo, result) => {
   );
 };
 
+Venta.getNotifications = (result) => {
+  const queries = {
+    materia_prima: `SELECT 'materia_prima' AS tipo, id, nombre, detalles, cantidad, cantidad_unitaria, precio_actual
+                    FROM materia_prima
+                    WHERE cantidad <= 5`,
+    productos: `SELECT 'productos' AS tipo, id, nombre, '', cantidad, '', precio AS precio_actual
+                FROM productos
+                WHERE cantidad <= 5`,
+    pedidos: `SELECT 'pedidos' AS tipo, id, id_detalles, estatus_envio, estatus_pago, total, id_admin, fecha, id_cliente
+              FROM pedidos
+              WHERE DATE(fecha) = CURDATE()`,
+    ventas: `SELECT 'ventas' AS tipo, id, fecha, id_cliente, detalles, ingresos, id_admin
+             FROM ventas
+             WHERE DATE(fecha) = CURDATE()`,
+  };
+
+  const results = {};
+  let completed = 0;
+  const keys = Object.keys(queries);
+
+  keys.forEach((key) => {
+    sql.query(queries[key], (err, res) => {
+      if (err) {
+        console.log("Error: ", err);
+        result(err, null);
+        return;
+      }
+
+      results[key] = res;
+      completed += 1;
+
+      if (completed === keys.length) {
+        result(null, results);
+      }
+    });
+  });
+};
+
 module.exports = Venta;
