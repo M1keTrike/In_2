@@ -1,5 +1,7 @@
 const baseURL = "https://margaritasdesignapi.integrador.xyz/uploads/";
 
+const imageModel = require("../models/imageModel");
+
 const createImage = async (req, res) => {
   try {
     const image = {
