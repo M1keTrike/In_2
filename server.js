@@ -8,7 +8,7 @@ const { apiLimiter } = require("./app/utils/rateLimiters.js");
 
 app.use("/api", apiLimiter);
 
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/uploads", express.static(path.join(__dirname, "app/uploads")));
 
 const options = {
   key: fs.readFileSync(
