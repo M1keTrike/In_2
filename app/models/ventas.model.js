@@ -223,7 +223,7 @@ Venta.getNotifications = (result) => {
     productos: `SELECT 'productos' AS tipo, id, nombre, '', cantidad, '', precio AS precio_actual
                 FROM productos
                 WHERE cantidad <= 5`,
-    pedidos: `SELECT 'pedidos' AS tipo, id, id_detalles, estatus_envio, estatus_pago, total, id_admin, fecha, id_cliente
+    pedidos: `SELECT 'pedidos' AS tipo, id, estatus_envio, estatus_pago, total, id_admin, fecha, id_cliente
               FROM pedidos
               WHERE DATE(fecha) = CURDATE()`,
     ventas: `SELECT 'ventas' AS tipo, id, fecha, id_cliente, detalles, ingresos, id_admin
