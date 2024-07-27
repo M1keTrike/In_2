@@ -10,14 +10,14 @@ app.use("/api", apiLimiter);
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// // const options = {
-// //   key: fs.readFileSync(
-// //     "/etc/letsencrypt/live/margaritasdesignapi.integrador.xyz/privkey.pem"
-// //   ),
-// //   cert: fs.readFileSync(
-// //     "/etc/letsencrypt/live/margaritasdesignapi.integrador.xyz/fullchain.pem"
-// //   ),
-// // };
+const options = {
+  key: fs.readFileSync(
+    "/etc/letsencrypt/live/margaritasdesignapi.integrador.xyz/privkey.pem"
+  ),
+  cert: fs.readFileSync(
+    "/etc/letsencrypt/live/margaritasdesignapi.integrador.xyz/fullchain.pem"
+  ),
+};
 
 const corsOptionsDev = {
   origin: "http://localhost:5173",
