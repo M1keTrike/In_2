@@ -8,14 +8,16 @@ const { apiLimiter } = require("./app/utils/rateLimiters.js");
 
 app.use("/api", apiLimiter);
 
-const options = {
-  key: fs.readFileSync(
-    "/etc/letsencrypt/live/margaritasdesignapi.integrador.xyz/privkey.pem"
-  ),
-  cert: fs.readFileSync(
-    "/etc/letsencrypt/live/margaritasdesignapi.integrador.xyz/fullchain.pem"
-  ),
-};
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// // const options = {
+// //   key: fs.readFileSync(
+// //     "/etc/letsencrypt/live/margaritasdesignapi.integrador.xyz/privkey.pem"
+// //   ),
+// //   cert: fs.readFileSync(
+// //     "/etc/letsencrypt/live/margaritasdesignapi.integrador.xyz/fullchain.pem"
+// //   ),
+// // };
 
 const corsOptionsDev = {
   origin: "http://localhost:5173",
@@ -54,8 +56,6 @@ require("./app/routes/ventas.routes.js")(app);
 require("./app/routes/pedidos.routes.js")(app);
 require("./app/routes/imageRoutes.js")(app);
 require("./app/routes/carrito_productos.routes.js")(app);
-
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 const authRoutes = require("./app/routes/auth.routes.js");
 

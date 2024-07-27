@@ -53,5 +53,5 @@ module.exports = (app) => {
     carrito.cleanById
   );
 
-  app.use("/api/carritos", router);
+  app.use("/api/carritos/", router);
 };

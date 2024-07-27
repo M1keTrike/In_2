@@ -1,10 +1,10 @@
-const imageModel = require("../models/imageModel");
+const baseURL = "https://margaritasdesignapi.integrador.xyz/uploads/";
 
 const createImage = async (req, res) => {
   try {
     const image = {
       filename: req.file.filename,
-      path: req.file.path,
+      path: req.file.path.replace(/\\/g, "/"),
       mimetype: req.file.mimetype,
     };
     const id = await imageModel.createImage(image);
@@ -14,8 +14,6 @@ const createImage = async (req, res) => {
   }
 };
 
-const baseURL = "https://margaritasdesignapi.integrador.xyz/uploads/";
-
 const getImageById = async (req, res) => {
   try {
     const image = await imageModel.getImageById(req.params.id);
@@ -23,6 +21,7 @@ const getImageById = async (req, res) => {
       return res.status(404).json({ error: "Image not found" });
     }
     image.url = baseURL + image.filename;
+    image.path = image.path.replace(/\\/g, "/");
     res.status(200).json(image);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -34,6 +33,7 @@ const getAllImages = async (req, res) => {
     const images = await imageModel.getAllImages();
     images.forEach((image) => {
       image.url = baseURL + image.filename;
+      image.path = image.path.replace(/\\/g, "/");
     });
     res.status(200).json(images);
   } catch (err) {
@@ -45,7 +45,7 @@ const updateImage = async (req, res) => {
   try {
     const image = {
       filename: req.file.filename,
-      path: req.file.path,
+      path: req.file.path.replace(/\\/g, "/"),
       mimetype: req.file.mimetype,
     };
     await imageModel.updateImage(req.params.id, image);
