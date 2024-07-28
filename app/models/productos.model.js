@@ -108,14 +108,13 @@ Producto.getByType = (tipo, result) => {
 
 Producto.updateById = (id, producto, result) => {
   sql.query(
-    "UPDATE productos SET nombre = ?, precio = ?, cantidad = ?, acabado = ?, tipo = ?, id_imagen = ? WHERE id = ?",
+    "UPDATE productos SET nombre = ?, precio = ?, cantidad = ?, acabado = ?, tipo = ?  WHERE id = ?",
     [
       producto.nombre,
       producto.precio,
       producto.cantidad,
       producto.acabado,
       producto.tipo,
-      producto.id_imagen,
       id,
     ],
     (err, res) => {
