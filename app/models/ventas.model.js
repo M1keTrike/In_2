@@ -201,6 +201,8 @@ Venta.getExpensesReport = (periodo, result) => {
     case "año":
       dateCondition = "DATE_SUB(CURDATE(), INTERVAL 1 YEAR)";
       break;
+    case "mespasado":
+      dateCondition = `fecha BETWEEN DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 1 MONTH), '%Y-%m-01') AND LAST_DAY(DATE_SUB(CURDATE(), INTERVAL 1 MONTH))`;
     default:
       dateCondition = "CURDATE()";
   }
